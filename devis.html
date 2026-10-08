@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Devis en ligne — Selestic Auto</title>
+<meta name="description" content="Demandez un devis personnalisé à Selestic Auto : véhicule, prestation, matière, couleur et description de votre projet.">
+<meta name="theme-color" content="#0a0c0b">
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="devis">
+<header id="header"></header>
+<main>
+<section class="page-hero"><img class="snake" src="assets/img/snake-left.png" alt="" aria-hidden="true"><div class="wrap"><span class="eyebrow">Devis en ligne</span><h1>Parlons de votre <span class='accent'>projet</span></h1><p class="lead">Renseignez votre véhicule et votre projet : Selestic reçoit toutes les informations nécessaires avant de vous répondre.</p></div></section><section style="padding-top:20px"><div class="wrap" style="max-width:900px">
+<form class="form" id="form-devis">
+<fieldset><legend>Votre véhicule</legend><div class="grid2">
+<div class="field"><label for="d-type">Type de véhicule *</label><select id="d-type" name="type" data-label="Type de véhicule" data-opt="vehicules" required></select></div>
+<div class="field"><label for="d-marque">Marque *</label><input id="d-marque" name="marque" data-label="Marque" required></div>
+<div class="field"><label for="d-modele">Modèle *</label><input id="d-modele" name="modele" data-label="Modèle" required></div>
+<div class="field"><label for="d-annee">Année</label><input id="d-annee" name="annee" data-label="Année" inputmode="numeric" maxlength="4"></div></div></fieldset>
+<fieldset><legend>Votre projet</legend><div class="grid2">
+<div class="field"><label for="d-pres">Prestation souhaitée *</label><select id="d-pres" name="prestation" data-label="Prestation souhaitée" data-opt="prestations" required></select></div>
+<div class="field"><label for="d-mat">Matière souhaitée</label><select id="d-mat" name="matiere" data-label="Matière souhaitée" data-opt="matieres"></select></div>
+<div class="field"><label for="d-col">Couleur</label><input id="d-col" name="couleur" data-label="Couleur"></div>
+<div class="field"><label for="d-niv">Niveau de personnalisation</label><select id="d-niv" name="niveau" data-label="Niveau de personnalisation" data-opt="personnalisation"></select></div></div>
+<div class="field"><label for="d-photos">Photos du véhicule / intérieur</label><input id="d-photos" name="photos" type="file" accept="image/*" multiple></div>
+<div class="field"><label for="d-desc">Description du projet</label><textarea id="d-desc" name="description" data-label="Description du projet"></textarea></div></fieldset>
+<fieldset><legend>Vos coordonnées</legend><div class="grid2">
+<div class="field"><label for="d-nom">Nom *</label><input id="d-nom" name="nom" data-label="Nom" autocomplete="name" required></div>
+<div class="field"><label for="d-tel">Téléphone *</label><input id="d-tel" name="tel" data-label="Téléphone" type="tel" autocomplete="tel" required></div></div>
+<div class="field"><label for="d-mail">E-mail *</label><input id="d-mail" name="email" data-label="E-mail" type="email" autocomplete="email" required></div>
+<div class="field hp" aria-hidden="true"><label>Ne pas remplir<input name="website" tabindex="-1" autocomplete="off"></label></div></fieldset>
+<button class="btn btn-primary" type="submit">Envoyer mon projet</button>
+<p class="msg" id="msg-devis" role="status">Merci ! Votre demande est prête. Selestic reviendra vers vous rapidement.</p>
+</form></div></section>
+</main>
+<footer id="footer"></footer>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

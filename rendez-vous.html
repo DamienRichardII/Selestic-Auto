@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rendez-vous — Selestic Auto</title>
+<meta name="description" content="Demandez un rendez-vous directement depuis le site Selestic Auto : prestation, véhicule, date, créneau et coordonnées.">
+<meta name="theme-color" content="#0a0c0b">
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="rdv">
+<header id="header"></header>
+<main>
+<section class="page-hero"><img class="snake" src="assets/img/snake-left.png" alt="" aria-hidden="true"><div class="wrap"><span class="eyebrow">Réservation</span><h1>Prendre <span class='accent'>rendez-vous</span></h1><p class="lead">Sélectionnez votre prestation, votre véhicule, une date et un créneau. Selestic confirme ensuite le rendez-vous.</p></div></section><section style="padding-top:20px"><div class="wrap" style="max-width:900px">
+<div class="notice" style="margin-bottom:22px">Les créneaux peuvent dépendre de la disponibilité des matériaux et de la validation du projet. Selestic confirme ensuite le rendez-vous.</div>
+<form class="form" id="form-rdv">
+<fieldset><legend>Prestation et véhicule</legend><div class="grid2">
+<div class="field"><label for="r-pres">Prestation *</label><select id="r-pres" name="prestation" data-label="Prestation" data-opt="prestations" required></select></div>
+<div class="field"><label for="r-veh">Votre véhicule *</label><input id="r-veh" name="vehicule" data-label="Véhicule (type, marque, modèle)" placeholder="Type, marque, modèle" required></div></div></fieldset>
+<fieldset><legend>Date et créneau souhaités</legend>
+<div class="field" style="max-width:260px"><label for="r-date">Date souhaitée *</label><input id="r-date" name="date" data-label="Date souhaitée" type="date" required></div>
+<div class="field"><label>Créneau *</label><div class="slots" id="slots"></div><input type="hidden" name="creneau" data-label="Créneau"><span id="slot-err" class="note-small" style="color:#e6c878"></span></div>
+<p class="note-small">Horaires : 9h00 – 19h00, sur rendez-vous.</p></fieldset>
+<fieldset style="margin-top:14px"><legend>Vos coordonnées</legend><div class="grid2">
+<div class="field"><label for="r-nom">Nom *</label><input id="r-nom" name="nom" data-label="Nom" autocomplete="name" required></div>
+<div class="field"><label for="r-tel">Téléphone *</label><input id="r-tel" name="tel" data-label="Téléphone" type="tel" autocomplete="tel" required></div></div>
+<div class="field"><label for="r-mail">E-mail *</label><input id="r-mail" name="email" data-label="E-mail" type="email" autocomplete="email" required></div>
+<div class="field hp" aria-hidden="true"><label>Ne pas remplir<input name="website" tabindex="-1" autocomplete="off"></label></div></fieldset>
+<button class="btn btn-primary" type="submit">Demander ce rendez-vous</button>
+<p class="msg" id="msg-rdv" role="status">Merci ! Votre demande de rendez-vous est prête. Selestic vous confirmera le créneau.</p>
+</form></div></section>
+</main>
+<footer id="footer"></footer>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
