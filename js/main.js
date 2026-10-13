@@ -7,7 +7,7 @@
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
-  var vis = function (img) { return '<div class="visual" style="--img:url(\'../assets/img/' + esc(img) + '\')"></div>'; };
+  var vis = function (img) { var u = !img ? "" : (img.indexOf("/") > -1 ? "../" + img : "../assets/img/" + img); return '<div class="visual"' + (u ? ' style="--img:url(\'' + esc(u) + '\')"' : "") + "></div>"; };
   var ARROW = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
   var ICON = {
     phone: '<svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>',
@@ -23,15 +23,43 @@
     tiktok: '<svg viewBox="0 0 24 24"><path d="M16 3c.3 2.4 1.8 4 4 4.2v3.2a7.200 7.200 0 0 1-4-1.300V15a6 6 0 1 1-6-6c.3 0 .7 0 1 .1v3.300a2.800 2.800 0 1 0 1.800 2.600V3z"/></svg>',
     instagram: '<svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm5 3.500A4.500 4.500 0 1 1 7.500 12 4.500 4.500 0 0 1 12 7.500zm0 2A2.500 2.500 0 1 0 14.500 12 2.500 2.500 0 0 0 12 9.500zM17.500 5.500a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/></svg>'
   };
-  var NAV = [["index.html", "Accueil", "home"], ["prestations.html", "Prestations", "prestations"], ["realisations.html", "Réalisations", "realisations"], ["stock.html", "Stock", "stock"], ["devis.html", "Devis", "devis"], ["rendez-vous.html", "Rendez-vous", "rdv"], ["univers.html", "Univers", "univers"], ["contact.html", "Contact", "contact"]];
+  var NAV = [["index.html", "Accueil", "home"], ["prestations.html", "Prestations", "prestations"], ["realisations.html", "Réalisations", "realisations"], ["stock.html", "Stock", "stock"], ["simulateur.html", "Simulateur", "simulateur"], ["devis.html", "Devis", "devis"]];
+
+  /* ---------- Lightbox générique + vidéos (lecture au défilement) ---------- */
+  var lb = $("#lb");
+  if (!lb) { lb = document.createElement("div"); lb.className = "lb"; lb.id = "lb"; lb.setAttribute("role", "dialog"); lb.setAttribute("aria-modal", "true"); lb.innerHTML = '<div class="lb-in"></div>'; document.body.appendChild(lb); }
+  var closeLb = function () { lb.classList.remove("open"); document.body.style.overflow = ""; $(".lb-in", lb).innerHTML = ""; };
+  var openLb = function (html) { $(".lb-in", lb).innerHTML = '<button class="lb-x" aria-label="Fermer">×</button>' + html; lb.classList.add("open"); document.body.style.overflow = "hidden"; $(".lb-x", lb).focus(); };
+  lb.addEventListener("click", function (e) { if (e.target === lb || e.target.closest(".lb-x")) closeLb(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeLb(); });
+  var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function initVideos() {
+    var vs = $$("video[data-src]");
+    if (!vs.length) return;
+    if (still || !("IntersectionObserver" in window)) { vs.forEach(function (v) { v.controls = true; v.preload = "none"; v.src = v.dataset.src; v.removeAttribute("data-src"); }); return; }
+    var io = new IntersectionObserver(function (en) {
+      en.forEach(function (x) {
+        var v = x.target;
+        if (x.isIntersecting) { if (v.dataset.src) { v.src = v.dataset.src; v.removeAttribute("data-src"); } var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); }
+        else if (!v.dataset.src) v.pause();
+      });
+    }, { threshold: .35 });
+    vs.forEach(function (v) { io.observe(v); });
+  }
+  document.addEventListener("click", function (e) {
+    var ph = e.target.closest("[data-zoom]");
+    if (ph) { openLb('<img class="lb-img" src="' + esc(ph.dataset.zoom) + '" alt="' + esc(ph.dataset.alt || "Réalisation Selestic Auto") + '">'); return; }
+    var vd = e.target.closest("[data-video]");
+    if (vd) openLb('<video class="lb-img" src="' + esc(vd.dataset.video) + '" controls autoplay loop playsinline></video>');
+  });
 
   /* ---------- Header / footer / contact rapide ---------- */
   var hdr = $("#header");
   if (hdr) {
     hdr.className = "header";
     hdr.innerHTML = '<div class="wrap nav"><a class="brand" href="index.html" aria-label="Selestic Auto — accueil"><img src="assets/img/logo.png" alt="Selestic Auto" width="80" height="56"></a>' +
-      '<nav class="menu" id="menu" aria-label="Navigation principale">' + NAV.map(function (n) { return '<a href="' + n[0] + '"' + (n[2] === page || (page === "prestation" && n[2] === "prestations") ? ' class="active" aria-current="page"' : "") + ">" + n[1] + "</a>"; }).join("") + '<a class="btn btn-primary m-cta" href="devis.html">Demander un devis</a></nav>' +
-      '<a class="btn btn-primary nav-cta" href="devis.html">Demander un devis</a><button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span></button></div>';
+      '<nav class="menu" id="menu" aria-label="Navigation principale">' + NAV.map(function (n) { return '<a href="' + n[0] + '"' + (n[2] === page || (page === "prestation" && n[2] === "prestations") ? ' class="active" aria-current="page"' : "") + ">" + n[1] + "</a>"; }).join("") + '<a class="btn btn-gold m-cta" href="rendez-vous.html">Prendre RDV</a><a class="btn btn-primary m-cta" href="devis.html">Demander un devis</a></nav>' +
+      '<div class="nav-ctas"><a class="btn btn-gold nav-cta" href="rendez-vous.html">Prendre RDV</a><a class="btn btn-primary nav-cta" href="devis.html">Demander un devis</a></div><button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span></button></div>';
     var onScroll = function () { hdr.classList.toggle("scrolled", window.scrollY > 30); };
     onScroll(); window.addEventListener("scroll", onScroll, { passive: true });
     $("#burger").addEventListener("click", function () {
@@ -48,11 +76,6 @@
       '<div><h4>Contact</h4><ul><li><a href="tel:' + C.telHref + '">' + esc(C.tel) + '</a></li><li><a href="mailto:' + C.email + '">' + esc(C.email) + '</a></li><li>' + esc(C.horaires) + '</li></ul><div class="social-row" style="margin-top:16px"><a class="sn" href="' + C.instagram + '" target="_blank" rel="noopener" aria-label="Instagram Selestic Auto">' + SOCIAL.instagram + '</a><a class="sn" href="' + C.tiktok + '" target="_blank" rel="noopener" aria-label="TikTok Selestic Auto">' + SOCIAL.tiktok + '</a></div></div></div>' +
       '<div class="copy"><span>© ' + new Date().getFullYear() + ' Selestic Auto. Tous droits réservés.</span><span>Site réalisé par DamCompany</span></div></div>';
   }
-  var fab = document.createElement("div");
-  fab.className = "fab";
-  fab.innerHTML = '<div class="fab-list"><a href="tel:' + C.telHref + '">' + "Appeler Selestic" + '</a><a href="' + C.whatsapp + '" target="_blank" rel="noopener">WhatsApp</a><a href="devis.html">Demander un devis</a></div><button class="fab-main" aria-expanded="false" aria-label="Contact rapide"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v11H9l-5 4z"/></svg><span>Contact rapide</span></button>';
-  document.body.appendChild(fab);
-  $(".fab-main", fab).addEventListener("click", function () { var o = fab.classList.toggle("open"); this.setAttribute("aria-expanded", o); });
 
   /* ---------- Apparitions au défilement ---------- */
   function reveal() {
@@ -64,16 +87,16 @@
 
   /* ---------- Vidéo d'accueil optionnelle ---------- */
   var hv = $("#hero-video");
-  if (hv) { hv.addEventListener("error", function () { hv.remove(); }, true); }
+  if (hv) { hv.addEventListener("error", function () { hv.remove(); }, true); if (still) { hv.removeAttribute("autoplay"); hv.pause(); } }
 
   /* ---------- Accueil : catégories ---------- */
   var cats = [
-    ["Sellerie", "prestations.html#sellerie-renovation", "siege.jpg", "Sièges, panneaux, ciel de toit"],
-    ["Rénovation", "prestations.html#sellerie-renovation", "cuir.jpg", "Cuir, volants, tableau de bord"],
-    ["Personnalisation", "prestations.html#personnalisation", "perso.jpg", "Matières, couleurs, créations"],
-    ["Confort", "prestations.html#confort-technologie", "chauffants.jpg", "Sièges chauffants, électriques, ventilés"],
-    ["Extérieur / Carbone", "prestations.html#projets-futurs", "carbone.jpg", "Prochainement", true],
-    ["Projets sur mesure", "devis.html", "mesure.jpg", "Parlons de votre projet"]
+    ["Sellerie", "prestations.html#sellerie-renovation", "media/cuir/24.jpg", "Sièges, panneaux, ciel de toit"],
+    ["Rénovation", "prestations.html#sellerie-renovation", "media/cuir/12.jpg", "Cuir, volants, tableau de bord"],
+    ["Personnalisation", "prestations.html#personnalisation", "media/ceintures/02.jpg", "Matières, couleurs, créations"],
+    ["Confort", "prestations.html#confort-technologie", "media/chauffant/00.jpg", "Sièges chauffants, électriques, ventilés"],
+    ["Extérieur / Carbone", "prestations.html#projets-futurs", "", "Prochainement", true],
+    ["Projets sur mesure", "devis.html", "media/cielm/02.jpg", "Parlons de votre projet"]
   ];
   var hc = $("#home-cards");
   if (hc) hc.innerHTML = cats.map(function (c) {
@@ -91,6 +114,17 @@
   }).join("");
 
   /* ---------- Fiche prestation ---------- */
+  function mediaSection(p) {
+    var h = "";
+    if (p.coloris && p.coloris.length) h += '<section style="padding-top:0"><div class="wrap"><div class="sec-head"><div><span class="eyebrow">Collection</span><h2>Nos coloris de ceintures</h2><p>Découvrez la gamme de ceintures de sécurité Selestic. Touchez une image pour l’agrandir.</p></div></div><div class="coloris">' + p.coloris.map(function (c) { return '<button class="col" data-zoom="' + esc(c) + '" aria-label="Agrandir le coloris"><img src="' + esc(c) + '" alt="Coloris de ceintures Selestic" loading="lazy"></button>'; }).join("") + "</div></div></section>";
+    if (p.photos && p.photos.length) h += '<section style="padding-top:0"><div class="wrap"><div class="sec-head"><div><span class="eyebrow">En images</span><h2>Réalisations Selestic</h2></div><a class="btn btn-gold" href="realisations.html">Voir nos réalisations</a></div><div class="mgal">' + p.photos.map(function (u) { return '<button class="mph" data-zoom="' + esc(u) + '" data-alt="' + esc(p.titre) + '" aria-label="Agrandir la photo"><img src="' + esc(u) + '" alt="' + esc(p.titre) + ' — réalisation Selestic" loading="lazy" decoding="async"></button>'; }).join("") + "</div></div></section>";
+    if (p.videos && p.videos.length) h += '<section style="padding-top:0"><div class="wrap"><div class="sec-head"><div><span class="eyebrow">En vidéo</span><h2>L’atelier au travail</h2></div></div><div class="mvid">' + p.videos.map(function (v) { return '<button class="mv" data-video="' + esc(v.src) + '" aria-label="Voir la vidéo en grand"><video data-src="' + esc(v.src) + '" poster="' + esc(v.poster) + '" muted loop playsinline preload="none"></video></button>'; }).join("") + "</div></div></section>";
+    return h;
+  }
+  function baSection(p) {
+    if (!p.ba || !p.ba.length) return "";
+    return '<section style="padding-top:0"><div class="wrap"><div class="sec-head"><div><span class="eyebrow">Transformation</span><h2>Avant / Après</h2><p>Faites glisser la barre pour voir la différence.</p></div></div>' + p.ba.map(function (id) { var b = D.avantApres.filter(function (x) { return x.id === id; })[0]; return b ? '<div style="margin-bottom:36px">' + baHTML(b) + "</div>" : ""; }).join("") + "</div></section>";
+  }
   var fiche = $("#fiche");
   if (fiche) {
     var slug = new URLSearchParams(location.search).get("p");
@@ -112,17 +146,17 @@
           '<div class="info"><span class="eyebrow">Délai</span><p>' + esc(p.delai || "Selon le véhicule et la disponibilité des matériaux.") + "</p></div>" +
           '<div class="info"><span class="eyebrow">Prix</span><p>' + (p.prix ? "À partir de " + esc(p.prix) + " €" : "Tarif sur devis") + "</p></div></div>" +
           '<p class="note-small" style="margin-top:14px">Les durées et délais sont indicatifs et peuvent varier selon le véhicule, la complexité du projet et la disponibilité des matériaux.</p></div></section>' +
-          '<section style="padding-top:0"><div class="wrap"><div class="sec-head"><div><span class="eyebrow">Transformation</span><h2>Avant / Après</h2></div><a class="btn btn-gold" href="realisations.html">Voir nos réalisations</a></div><div id="ba-slot"></div></div></section>' +
+          mediaSection(p) + baSection(p) +
           '<section style="padding-top:0"><div class="wrap"><div class="cta-band"><h2>Besoin de cette prestation ?</h2><a class="btn btn-primary" href="' + devisUrl + '">Demander un devis</a></div></div></section>';
       }
-      fiche.innerHTML = body;
+      fiche.innerHTML = body; initBA(); initVideos();
     }
   }
 
   /* ---------- Avant / après ---------- */
   function baHTML(b) {
     var meta = [["Véhicule", b.vehicule], ["Prestation", b.prestation], ["Matières", b.matieres], ["Couleurs", b.couleurs], ["Temps de réalisation", b.temps]].filter(function (m) { return m[1]; });
-    return '<div class="ba" data-id="' + b.id + '"><div class="layer before">' + vis("avant-" + b.id + ".jpg") + '</div><div class="layer after">' + vis("apres-" + b.id + ".jpg") + '</div><span class="lbl l1">AVANT</span><span class="lbl l2">APRÈS</span><div class="bar"><div class="knob" aria-hidden="true">⇆</div></div><input type="range" min="0" max="100" value="50" aria-label="Comparer avant et après"></div>' +
+    return (b.titre ? '<h3 style="margin:0 0 14px">' + esc(b.titre) + "</h3>" : "") + '<div class="ba" data-id="' + b.id + '"><div class="layer before">' + vis(b.avant) + '</div><div class="layer after">' + vis(b.apres) + '</div><span class="lbl l1">AVANT</span><span class="lbl l2">APRÈS</span><div class="bar"><div class="knob" aria-hidden="true">⇆</div></div><input type="range" min="0" max="100" value="50" aria-label="Comparer avant et après"></div>' +
       (meta.length ? '<dl class="meta">' + meta.map(function (m) { return "<div><dt>" + m[0] + "</dt><dd>" + esc(m[1]) + "</dd></div>"; }).join("") + "</dl>" : "");
   }
   function initBA() {
@@ -132,8 +166,10 @@
       r.addEventListener("input", set); set();
     });
   }
-  var ba1 = $("#ba-home") || $("#ba-slot");
-  if (ba1 && D.avantApres[0]) { ba1.innerHTML = baHTML(D.avantApres[0]); initBA(); }
+  var baHome = $("#ba-home");
+  if (baHome && D.avantApres[0]) { baHome.innerHTML = baHTML(D.avantApres[0]); initBA(); }
+  var baAll = $("#ba-all");
+  if (baAll) { baAll.innerHTML = D.avantApres.map(function (b) { return '<div style="margin-bottom:44px">' + baHTML(b) + "</div>"; }).join(""); initBA(); }
 
   /* ---------- Réalisations : accueil + galerie + lightbox ---------- */
   var rs = $("#real-strip");
@@ -143,7 +179,7 @@
 
   var gal = $("#gallery");
   if (gal) {
-    var lb = $("#lb"), cur = "Tout";
+    var cur = "Tout";
     var fl = $("#filters");
     fl.innerHTML = D.filtresRealisations.map(function (f) { return '<button class="chip' + (f === cur ? " on" : "") + '" data-f="' + esc(f) + '">' + esc(f) + "</button>"; }).join("");
     var draw = function () {
@@ -156,12 +192,8 @@
       var b = e.target.closest(".it"); if (!b) return;
       var r = D.realisations.filter(function (x) { return x.id == b.dataset.id; })[0];
       var meta = [["Véhicule", r.vehicule], ["Prestation", r.prestation], ["Matières", r.matieres], ["Couleurs", r.couleurs], ["Temps de réalisation", r.temps]].filter(function (m) { return m[1]; });
-      $(".lb-in", lb).innerHTML = '<button class="lb-x" aria-label="Fermer">×</button>' + vis(r.img) + '<div class="bd"><span class="eyebrow">' + esc(r.cat) + "</span><h3>" + esc(r.titre) + "</h3>" + (meta.length ? '<dl class="meta">' + meta.map(function (m) { return "<div><dt>" + m[0] + "</dt><dd>" + esc(m[1]) + "</dd></div>"; }).join("") + "</dl>" : "") + '<p style="margin-top:18px"><a class="btn btn-primary" href="devis.html">Demander un devis</a></p></div>';
-      lb.classList.add("open"); document.body.style.overflow = "hidden"; $(".lb-x", lb).focus();
+      openLb('<img class="lb-img" src="' + esc(r.img) + '" alt="' + esc(r.titre) + '"><div class="bd"><span class="eyebrow">' + esc(r.cat) + "</span><h3>" + esc(r.titre) + "</h3>" + (meta.length ? '<dl class="meta">' + meta.map(function (m) { return "<div><dt>" + m[0] + "</dt><dd>" + esc(m[1]) + "</dd></div>"; }).join("") + "</dl>" : "") + '<p style="margin-top:18px"><a class="btn btn-primary" href="devis.html">Demander un devis</a></p></div>');
     });
-    var closeLb = function () { lb.classList.remove("open"); document.body.style.overflow = ""; };
-    lb.addEventListener("click", function (e) { if (e.target === lb || e.target.closest(".lb-x")) closeLb(); });
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeLb(); });
     draw();
   }
 
@@ -217,6 +249,8 @@
   var fd = $("#form-devis");
   if (fd) {
     fillSelects(fd);
+    var sm = qs.get("sim");
+    if (sm) { try { var sd = JSON.parse(sm), dsc = $('[name="description"]', fd); dsc.value = "Configuration du simulateur Selestic :\n" + sd.map(function (l) { return "- " + l; }).join("\n") + "\n"; } catch (e) {} }
     var st = qs.get("stock"); if (st) $('[name="description"]', fd).value = "Produit en stock concerné : " + st + "\n";
     fd.addEventListener("submit", function (e) { e.preventDefault(); send(fd, "Demande de devis — Selestic Auto", $("#msg-devis")); });
   }
@@ -234,6 +268,45 @@
       $("#slot-err").textContent = ""; send(fr, "Demande de rendez-vous — Selestic Auto", $("#msg-rdv"));
       $$(".slot", slots).forEach(function (s) { s.classList.remove("on"); });
     });
+  }
+
+  /* ---------- Simulateur visuel ---------- */
+  var sv = $("#sim");
+  if (sv) {
+    var SM = D.simulateur, state = {}, cur = "sieges";
+    SM.zones.forEach(function (z) { state[z.id] = { c: 0, m: z.matieres[0] || "" }; });
+    var tabs = $("#sim-tabs"), sw = $("#sim-sw"), mats = $("#sim-mats"), rec = $("#sim-rec"), matBox = $("#sim-matbox");
+    var hex = function (i) { return SM.couleurs[i][1]; };
+    function paint() {
+      SM.zones.forEach(function (z) {
+        var st = state[z.id], el = $("#z-" + z.id, sv), col = hex(st.c);
+        if (z.id === "coutures") { sv.style.setProperty("--stitch", col); return; }
+        el.style.setProperty("--zc", col);
+        el.setAttribute("data-mat", st.m || "sangle");
+        var pz = $("#p-" + z.id);
+        if (pz) { pz.style.setProperty("--zc", col); pz.dataset.mat = st.m; $("#p-" + z.id + "-t").dataset.mat = st.m; }
+      });
+      var lines = SM.zones.map(function (z) { var st = state[z.id]; return z.nom + " : " + (st.m ? st.m + ", " : "") + SM.couleurs[st.c][0]; });
+      rec.innerHTML = lines.map(function (l) { return "<li>" + esc(l) + "</li>"; }).join("");
+      $("#sim-devis").href = "devis.html?sim=" + encodeURIComponent(JSON.stringify(lines));
+    }
+    function ui() {
+      var z = SM.zones.filter(function (x) { return x.id === cur; })[0], st = state[cur];
+      tabs.innerHTML = SM.zones.map(function (x) { return '<button type="button" class="chip' + (x.id === cur ? " on" : "") + '" data-z="' + x.id + '">' + esc(x.nom) + "</button>"; }).join("");
+      sw.innerHTML = SM.couleurs.map(function (c, i) { return '<button type="button" class="sw' + (i === st.c ? " on" : "") + '" data-c="' + i + '" style="--c:' + c[1] + '" aria-label="' + esc(c[0]) + '" title="' + esc(c[0]) + '"></button>'; }).join("");
+      $("#sim-cname").textContent = SM.couleurs[st.c][0];
+      matBox.style.display = z.matieres.length ? "" : "none";
+      mats.innerHTML = z.matieres.map(function (m) { return '<button type="button" class="chip' + (m === st.m ? " on" : "") + '" data-m="' + m + '">' + esc(m) + "</button>"; }).join("");
+      $$("#sim .zone").forEach(function (g) { g.classList.toggle("sel", g.id === "z-" + cur); });
+      $(".sim-view", sv).dataset.view = (cur === "sieges" || cur === "ciel") ? "photo" : "svg";
+    }
+    tabs.addEventListener("click", function (e) { var b = e.target.closest("[data-z]"); if (b) { cur = b.dataset.z; ui(); } });
+    sw.addEventListener("click", function (e) { var b = e.target.closest("[data-c]"); if (b) { state[cur].c = +b.dataset.c; ui(); paint(); } });
+    mats.addEventListener("click", function (e) { var b = e.target.closest("[data-m]"); if (b) { state[cur].m = b.dataset.m; ui(); paint(); } });
+    sv.addEventListener("click", function (e) { var g = e.target.closest(".zone"); if (g) { cur = g.id.slice(2); ui(); } });
+    $("#sim-all").addEventListener("click", function () { var c = state[cur].c; SM.zones.forEach(function (z) { state[z.id].c = c; }); ui(); paint(); });
+    $("#sim-reset").addEventListener("click", function () { SM.zones.forEach(function (z) { state[z.id] = { c: 0, m: z.matieres[0] || "" }; }); ui(); paint(); });
+    ui(); paint();
   }
 
   reveal();
