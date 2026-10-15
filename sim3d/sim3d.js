@@ -1,9 +1,9 @@
 import { r as e } from "./chunks/rolldown-runtime-Y_bBpyJl.js";
-import { _ as t, b as n, y as r } from "./chunks/r3f-C1LUL5py.js";
-import { a as i, c as a, d as o, f as s, l as c, o as l, r as u, s as d, t as f, u as p } from "./chunks/proc-D30mCTcD.js";
+import { C as t, w as n, x as r } from "./chunks/r3f-C40kzI9o.js";
+import { a as i, c as a, d as o, f as s, l as c, o as l, r as u, s as d, t as f, u as p } from "./chunks/proc-Cyhl_mP0.js";
 import { i as m, n as h, t as g } from "./chunks/api-DLoyHBA5.js";
 //#region src/lib/recap.ts
-var _ = /* @__PURE__ */ e(n(), 1), v = /* @__PURE__ */ e(r(), 1);
+var _ = /* @__PURE__ */ e(n(), 1), v = /* @__PURE__ */ e(t(), 1);
 function y(e) {
 	return o.map((t) => {
 		let n = e[t.id], r = l[n.material].label, i = n.material === "carbon" || n.material === "brushed_alu" ? "" : " — " + (c[n.color]?.label ?? n.color), a = n.pattern === "plain" ? "" : ` (${d[n.pattern].label.toLowerCase()})`;
@@ -42,7 +42,7 @@ function x(e) {
 }
 //#endregion
 //#region src/ui/App.tsx
-var S = t(), C = (0, _.lazy)(() => import("./chunks/Scene-BQ9MqA3J.js").then((e) => e.t)), w = class extends _.Component {
+var S = r(), C = (0, _.lazy)(() => import("./chunks/Scene-bXiZ2nKA.js").then((e) => e.t)), w = class extends _.Component {
 	state = { err: !1 };
 	static getDerivedStateFromError() {
 		return { err: !0 };
@@ -186,15 +186,15 @@ function O() {
 							}),
 							/* @__PURE__ */ (0, S.jsx)("option", {
 								value: "low",
-								children: "Économique"
+								children: "Mobile"
 							}),
 							/* @__PURE__ */ (0, S.jsx)("option", {
 								value: "medium",
-								children: "Équilibrée"
+								children: "Équilibré"
 							}),
 							/* @__PURE__ */ (0, S.jsx)("option", {
 								value: "high",
-								children: "Maximale"
+								children: "Ultra"
 							})
 						]
 					})]

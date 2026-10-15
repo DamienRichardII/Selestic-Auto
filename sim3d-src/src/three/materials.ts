@@ -58,7 +58,7 @@ export function buildMaterial(m: MaterialId, colorHex: string, pattern: PatternI
       Object.assign(mat, { roughness: 0.62, sheen: 0.6, sheenRoughness: 0.5, sheenColor: sheenCol })
       break
   }
-  if (hasScan(m)) void applyScan(mat, m as ScanName, Math.min(texSize, 1024))
+  if (hasScan(m)) void applyScan(mat, m as ScanName, (texSize >= 1024 ? 1024 : 512))
   cache.set(key, mat)
   return mat
 }
@@ -88,7 +88,7 @@ export function fixedMat(name: 'plastic' | 'plasticSoft' | 'chrome' | 'carpet' |
       const t = getTextures('leather_grained', 'plain', Math.min(texSize, 512))
       const mm = new THREE.MeshPhysicalMaterial({ color: '#17191b', roughness: 1, clearcoat: 0.05, clearcoatRoughness: 0.7 })
       if (t) { const n = t.normal.clone(); n.repeat.set(5, 5); n.needsUpdate = true; mm.normalMap = n; mm.normalScale = new THREE.Vector2(0.5, 0.5); mm.roughnessMap = null; mm.roughness = 0.62 }
-      void applyScan(mm, 'plastic', Math.min(texSize, 1024))
+      void applyScan(mm, 'plastic', (texSize >= 1024 ? 1024 : 512))
       m = mm; break
     }
     case 'plasticSoft': m = new THREE.MeshPhysicalMaterial({ color: '#0f1011', roughness: 0.75, sheen: 0.3, sheenRoughness: 0.6, sheenColor: new THREE.Color('#444') }); break
@@ -102,7 +102,7 @@ export function fixedMat(name: 'plastic' | 'plasticSoft' | 'chrome' | 'carpet' |
     }
     case 'glassBlack': m = new THREE.MeshPhysicalMaterial({ color: '#05070a', roughness: 0.08, metalness: 0.2, clearcoat: 1, clearcoatRoughness: 0.03 }); break
     case 'rubber': m = new THREE.MeshStandardMaterial({ color: '#0b0b0c', roughness: 0.9 }); break
-    case 'pedestal': m = new THREE.MeshPhysicalMaterial({ color: '#040404', roughness: 0.5, metalness: 0.25, clearcoat: 0.35, clearcoatRoughness: 0.4 }); break
+    case 'pedestal': m = new THREE.MeshPhysicalMaterial({ color: '#050505', roughness: 0.62, metalness: 0.05, clearcoat: 0.12, clearcoatRoughness: 0.5 }); break
   }
   fixed.set(k, m)
   fixedKind.set(m, name)

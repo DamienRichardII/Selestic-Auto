@@ -1,10 +1,10 @@
 import { r as e } from "./rolldown-runtime-Y_bBpyJl.js";
-import { _ as t, a as n, b as r, h as i, p as a } from "./r3f-C1LUL5py.js";
-import { d as o, i as s, l as c, r as l } from "./proc-D30mCTcD.js";
-import { U as u, b as d } from "./post-CUbYs-ZN.js";
-import { i as f, n as p, r as m } from "./Scene-BQ9MqA3J.js";
+import { _ as t, l as n, w as r, x as i, y as a } from "./r3f-C40kzI9o.js";
+import { d as o, i as s, l as c, r as l } from "./proc-Cyhl_mP0.js";
+import { J as u, T as d } from "./post-OfUYQ3IA.js";
+import { i as f, n as p, r as m } from "./Scene-bXiZ2nKA.js";
 //#region src/three/GlbInterior.tsx
-var h = /* @__PURE__ */ e(r(), 1), g = t(), _ = [
+var h = /* @__PURE__ */ e(r(), 1), g = i(), _ = [
 	"plastic",
 	"plasticSoft",
 	"chrome",
@@ -32,15 +32,15 @@ function v({ zone: e, group: t }) {
 	});
 }
 function y({ url: e }) {
-	let t = a(e), n = l((e) => e.config), r = l((e) => e.tier), y = s[r].texSize, b = (0, h.useMemo)(() => {
-		let e = t.scene.clone(!0);
+	let n = t(e), r = l((e) => e.config), i = l((e) => e.tier), y = s[i].texSize, b = (0, h.useMemo)(() => {
+		let e = n.scene.clone(!0);
 		e.updateMatrixWorld(!0);
-		let n = [];
+		let t = [];
 		e.traverse((e) => {
-			e.isMesh && n.push(e);
+			e.isMesh && t.push(e);
 		});
 		let r = /* @__PURE__ */ new Map(), i = /* @__PURE__ */ new Map();
-		for (let e of n) {
+		for (let e of t) {
 			let t = e.name, n = o.find((e) => t.startsWith("zone__" + e.id));
 			if (n) {
 				let t = r.get(n.id);
@@ -51,7 +51,7 @@ function y({ url: e }) {
 			}
 		}
 		let a = [], s = new d();
-		for (let e of n) {
+		for (let e of t) {
 			s.setFromObject(e);
 			let t = (s.min.x + s.max.x) / 2, n = e.parent?.name ?? "";
 			t < -.6 ? a.push({
@@ -70,12 +70,12 @@ function y({ url: e }) {
 			fixed: i,
 			side: a
 		};
-	}, [t]);
-	i(({ camera: e }) => {
+	}, [n]);
+	a(({ camera: e }) => {
 		let t = e.position.x, n = e.position.y, r = l.getState().view;
 		for (let e of b.side) e.mesh.visible = e.s === "L" ? t > -.82 || r === "door" : e.s === "R" ? t < .82 : Math.abs(t) < .85 && n < 1.3;
 	});
-	let x = (0, h.useMemo)(() => f(n, y), [n, y]), S = (0, h.useMemo)(() => p("thread", c[n.stitching.color].hex, "plain", y), [n.stitching.color, y]), C = (0, h.useMemo)(() => {
+	let x = (0, h.useMemo)(() => f(r, y), [r, y]), S = (0, h.useMemo)(() => p("thread", c[r.stitching.color].hex, "plain", y), [r.stitching.color, y]), C = (0, h.useMemo)(() => {
 		let e = x.door_panels.clone();
 		return e.side = 2, e;
 	}, [x.door_panels]);

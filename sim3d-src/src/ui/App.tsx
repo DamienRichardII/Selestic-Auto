@@ -95,9 +95,9 @@ function Stage() {
           <span>Qualité</span>
           <select value={qualityPref} onChange={(e) => setQualityPref(e.target.value as typeof qualityPref)} aria-label="Qualité du rendu">
             <option value="auto">Auto ({tier === 'low' ? 'éco' : tier === 'medium' ? 'équilibrée' : 'max'})</option>
-            <option value="low">Économique</option>
-            <option value="medium">Équilibrée</option>
-            <option value="high">Maximale</option>
+            <option value="low">Mobile</option>
+            <option value="medium">Équilibré</option>
+            <option value="high">Ultra</option>
           </select>
         </label>
       </div>

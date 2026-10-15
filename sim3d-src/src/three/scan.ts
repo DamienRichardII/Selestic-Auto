@@ -23,11 +23,14 @@ export const hasScan = (m: ScanName) => !!SCAN[m]
 const loader = new THREE.TextureLoader()
 const cache = new Map<string, Promise<THREE.Texture>>()
 
-function url(name: string, map: string, size: number) {
-  // le code vit dans /sim3d/sim3d.js ou /sim3d/chunks/*.js ; les textures dans /sim3d/tex/
+/** Racine des ressources : le code vit dans /sim3d/sim3d.js ou /sim3d/chunks/*.js ; textures et HDRI à côté. */
+export function assetRoot() {
   const here = import.meta.url
-  const root = here.includes('/chunks/') ? here.slice(0, here.lastIndexOf('/chunks/') + 1) : here.slice(0, here.lastIndexOf('/') + 1)
-  return `${root}tex/${name}/${map}_${size}.webp`
+  return here.includes('/chunks/') ? here.slice(0, here.lastIndexOf('/chunks/') + 1) : here.slice(0, here.lastIndexOf('/') + 1)
+}
+
+function url(name: string, map: string, size: number) {
+  return `${assetRoot()}tex/${name}/${map}_${size}.webp`
 }
 
 function tex(name: string, map: 'albedo' | 'normal' | 'rough' | 'ao', size: number, aniso: number) {

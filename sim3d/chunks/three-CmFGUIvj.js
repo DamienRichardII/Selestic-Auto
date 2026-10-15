@@ -1,7 +1,7 @@
 import { n as e } from "./rolldown-runtime-Y_bBpyJl.js";
-import { A as t, Bt as n, Ct as r, Ft as i, Ht as a, M as o, O as s, Pt as c, Qt as l, S as u, St as d, Tt as f, _t as p, gt as m, lt as h, q as g, rn as _, st as v, tt as y, ut as b, wt as x, x as S } from "./post-CUbYs-ZN.js";
+import { At as t, Bt as n, D as r, Dt as i, E as a, F as o, Gt as s, L as c, N as l, O as u, Ot as d, Q as f, St as p, ft as m, ht as h, kt as g, ln as _, mt as v, ot as y, qt as b, rn as x, xt as S, zt as C } from "./post-OfUYQ3IA.js";
 //#region node_modules/three/examples/jsm/exporters/GLTFExporter.js
-var ee = /* @__PURE__ */ e({ GLTFExporter: () => w }), C = {
+var ee = /* @__PURE__ */ e({ GLTFExporter: () => T }), w = {
 	POSITION: [
 		"byte",
 		"byte normalized",
@@ -22,36 +22,36 @@ var ee = /* @__PURE__ */ e({ GLTFExporter: () => w }), C = {
 		"short normalized",
 		"unsigned short"
 	]
-}, w = class {
+}, T = class {
 	constructor() {
 		this.textureUtils = null, this.pluginCallbacks = [], this.register(function(e) {
+			return new U(e);
+		}), this.register(function(e) {
 			return new W(e);
-		}), this.register(function(e) {
-			return new G(e);
-		}), this.register(function(e) {
-			return new Y(e);
-		}), this.register(function(e) {
-			return new X(e);
-		}), this.register(function(e) {
-			return new Z(e);
-		}), this.register(function(e) {
-			return new ne(e);
-		}), this.register(function(e) {
-			return new K(e);
-		}), this.register(function(e) {
-			return new q(e);
 		}), this.register(function(e) {
 			return new J(e);
 		}), this.register(function(e) {
-			return new re(e);
+			return new Y(e);
 		}), this.register(function(e) {
 			return new ie(e);
 		}), this.register(function(e) {
 			return new ae(e);
 		}), this.register(function(e) {
+			return new G(e);
+		}), this.register(function(e) {
+			return new K(e);
+		}), this.register(function(e) {
+			return new q(e);
+		}), this.register(function(e) {
 			return new oe(e);
 		}), this.register(function(e) {
 			return new se(e);
+		}), this.register(function(e) {
+			return new ce(e);
+		}), this.register(function(e) {
+			return new le(e);
+		}), this.register(function(e) {
+			return new X(e);
 		});
 	}
 	register(e) {
@@ -64,7 +64,7 @@ var ee = /* @__PURE__ */ e({ GLTFExporter: () => w }), C = {
 		return this.textureUtils = e, this;
 	}
 	parse(e, t, n, r) {
-		let i = new U(), a = [];
+		let i = new H(), a = [];
 		for (let e = 0, t = this.pluginCallbacks.length; e < t; e++) a.push(this.pluginCallbacks[e](i));
 		i.setPlugins(a), i.setTextureUtils(this.textureUtils), i.writeAsync(e, t, r).catch(n);
 	}
@@ -74,7 +74,7 @@ var ee = /* @__PURE__ */ e({ GLTFExporter: () => w }), C = {
 			n.parse(e, r, i, t);
 		});
 	}
-}, T = {
+}, E = {
 	POINTS: 0,
 	LINES: 1,
 	LINE_LOOP: 2,
@@ -100,24 +100,24 @@ var ee = /* @__PURE__ */ e({ GLTFExporter: () => w }), C = {
 	CLAMP_TO_EDGE: 33071,
 	MIRRORED_REPEAT: 33648,
 	REPEAT: 10497
-}, E = "KHR_mesh_quantization", D = {};
-D[r] = T.NEAREST, D[f] = T.NEAREST_MIPMAP_NEAREST, D[x] = T.NEAREST_MIPMAP_LINEAR, D[v] = T.LINEAR, D[b] = T.LINEAR_MIPMAP_NEAREST, D[h] = T.LINEAR_MIPMAP_LINEAR, D[s] = T.CLAMP_TO_EDGE, D[n] = T.REPEAT, D[d] = T.MIRRORED_REPEAT;
-var O = {
+}, D = "KHR_mesh_quantization", O = {};
+O[d] = E.NEAREST, O[t] = E.NEAREST_MIPMAP_NEAREST, O[g] = E.NEAREST_MIPMAP_LINEAR, O[m] = E.LINEAR, O[h] = E.LINEAR_MIPMAP_NEAREST, O[v] = E.LINEAR_MIPMAP_LINEAR, O[l] = E.CLAMP_TO_EDGE, O[s] = E.REPEAT, O[i] = E.MIRRORED_REPEAT;
+var k = {
 	scale: "scale",
 	position: "translation",
 	quaternion: "rotation",
 	morphTargetInfluences: "weights"
-}, k = new t(), A = 12, j = 1179937895, te = 2, M = 8, N = 1313821514, P = 5130562;
-function F(e, t) {
+}, te = new o(), A = 12, j = 1179937895, M = 2, N = 8, ne = 1313821514, re = 5130562;
+function P(e, t) {
 	return e.length === t.length && e.every(function(e, n) {
 		return e === t[n];
 	});
 }
-function I(e) {
+function F(e) {
 	return new TextEncoder().encode(e).buffer;
 }
-function L(e) {
-	return F(e.elements, [
+function I(e) {
+	return P(e.elements, [
 		1,
 		0,
 		0,
@@ -136,22 +136,22 @@ function L(e) {
 		1
 	]);
 }
-function R(e, t, n) {
+function L(e, t, n) {
 	let r = {
 		min: Array(e.itemSize).fill(Infinity),
 		max: Array(e.itemSize).fill(-Infinity)
 	};
 	for (let i = t; i < t + n; i++) for (let t = 0; t < e.itemSize; t++) {
 		let n;
-		e.itemSize > 4 ? n = e.array[i * e.itemSize + t] : (t === 0 ? n = e.getX(i) : t === 1 ? n = e.getY(i) : t === 2 ? n = e.getZ(i) : t === 3 && (n = e.getW(i)), e.normalized === !0 && (n = m.normalize(n, e.array))), r.min[t] = Math.min(r.min[t], n), r.max[t] = Math.max(r.max[t], n);
+		e.itemSize > 4 ? n = e.array[i * e.itemSize + t] : (t === 0 ? n = e.getX(i) : t === 1 ? n = e.getY(i) : t === 2 ? n = e.getZ(i) : t === 3 && (n = e.getW(i)), e.normalized === !0 && (n = S.normalize(n, e.array))), r.min[t] = Math.min(r.min[t], n), r.max[t] = Math.max(r.max[t], n);
 	}
 	return r;
 }
-function z(e) {
+function R(e) {
 	return Math.ceil(e / 4) * 4;
 }
-function B(e, t = 0) {
-	let n = z(e.byteLength);
+function z(e, t = 0) {
+	let n = R(e.byteLength);
 	if (n !== e.byteLength) {
 		let r = new Uint8Array(n);
 		if (r.set(new Uint8Array(e)), t !== 0) for (let i = e.byteLength; i < n; i++) r[i] = t;
@@ -159,10 +159,10 @@ function B(e, t = 0) {
 	}
 	return e;
 }
-function V() {
+function B() {
 	return typeof document > "u" && typeof OffscreenCanvas < "u" ? new OffscreenCanvas(1, 1) : document.createElement("canvas");
 }
-function H(e, t) {
+function V(e, t) {
 	if (typeof OffscreenCanvas < "u" && e instanceof OffscreenCanvas) {
 		let n;
 		return t === "image/jpeg" ? n = .92 : t === "image/webp" && (n = .8), e.convertToBlob({
@@ -172,7 +172,7 @@ function H(e, t) {
 	}
 	return new Promise((n) => e.toBlob(n, t));
 }
-var U = class {
+var H = class {
 	constructor() {
 		this.plugins = [], this.options = {}, this.pending = [], this.buffers = [], this.byteOffset = 0, this.buffers = [], this.nodeMap = /* @__PURE__ */ new Map(), this.skins = [], this.extensionsUsed = {}, this.extensionsRequired = {}, this.uids = /* @__PURE__ */ new Map(), this.uid = 0, this.json = { asset: {
 			version: "2.0",
@@ -209,12 +209,12 @@ var U = class {
 		if (l.length > 0 && (a.extensionsUsed = l), u.length > 0 && (a.extensionsRequired = u), a.buffers && a.buffers.length > 0 && (a.buffers[0].byteLength = c.size), n.copyright && (a.asset.copyright = n.copyright), n.binary === !0) {
 			let e = new FileReader();
 			e.readAsArrayBuffer(c), e.onloadend = function() {
-				let n = B(e.result), r = /* @__PURE__ */ new DataView(/* @__PURE__ */ new ArrayBuffer(M));
-				r.setUint32(0, n.byteLength, !0), r.setUint32(4, P, !0);
-				let i = B(I(JSON.stringify(a)), 32), o = /* @__PURE__ */ new DataView(/* @__PURE__ */ new ArrayBuffer(M));
-				o.setUint32(0, i.byteLength, !0), o.setUint32(4, N, !0);
+				let n = z(e.result), r = /* @__PURE__ */ new DataView(/* @__PURE__ */ new ArrayBuffer(N));
+				r.setUint32(0, n.byteLength, !0), r.setUint32(4, re, !0);
+				let i = z(F(JSON.stringify(a)), 32), o = /* @__PURE__ */ new DataView(/* @__PURE__ */ new ArrayBuffer(N));
+				o.setUint32(0, i.byteLength, !0), o.setUint32(4, ne, !0);
 				let s = /* @__PURE__ */ new ArrayBuffer(A), c = new DataView(s);
-				c.setUint32(0, j, !0), c.setUint32(4, te, !0);
+				c.setUint32(0, j, !0), c.setUint32(4, M, !0);
 				let l = A + o.byteLength + i.byteLength + r.byteLength + n.byteLength;
 				c.setUint32(8, l, !0);
 				let u = new Blob([
@@ -284,37 +284,37 @@ var U = class {
 				return e;
 			};
 		}
-		e instanceof o && (e = await this.decompressTextureAsync(e)), t instanceof o && (t = await this.decompressTextureAsync(t));
-		let r = e ? e.image : null, i = t ? t.image : null, a = Math.max(r ? r.width : 0, i ? i.width : 0), s = Math.max(r ? r.height : 0, i ? i.height : 0), c = V();
-		c.width = a, c.height = s;
-		let u = c.getContext("2d", { willReadFrequently: !0 });
-		u.fillStyle = "#00ffff", u.fillRect(0, 0, a, s);
-		let d = u.getImageData(0, 0, a, s);
+		e instanceof c && (e = await this.decompressTextureAsync(e)), t instanceof c && (t = await this.decompressTextureAsync(t));
+		let r = e ? e.image : null, i = t ? t.image : null, a = Math.max(r ? r.width : 0, i ? i.width : 0), o = Math.max(r ? r.height : 0, i ? i.height : 0), s = B();
+		s.width = a, s.height = o;
+		let l = s.getContext("2d", { willReadFrequently: !0 });
+		l.fillStyle = "#00ffff", l.fillRect(0, 0, a, o);
+		let u = l.getImageData(0, 0, a, o);
 		if (r) {
-			u.drawImage(r, 0, 0, a, s);
-			let t = n(e), i = u.getImageData(0, 0, a, s).data;
-			for (let e = 2; e < i.length; e += 4) d.data[e] = t(i[e] / 256) * 256;
+			l.drawImage(r, 0, 0, a, o);
+			let t = n(e), i = l.getImageData(0, 0, a, o).data;
+			for (let e = 2; e < i.length; e += 4) u.data[e] = t(i[e] / 256) * 256;
 		}
 		if (i) {
-			u.drawImage(i, 0, 0, a, s);
-			let e = n(t), r = u.getImageData(0, 0, a, s).data;
-			for (let t = 1; t < r.length; t += 4) d.data[t] = e(r[t] / 256) * 256;
+			l.drawImage(i, 0, 0, a, o);
+			let e = n(t), r = l.getImageData(0, 0, a, o).data;
+			for (let t = 1; t < r.length; t += 4) u.data[t] = e(r[t] / 256) * 256;
 		}
-		u.putImageData(d, 0, 0);
-		let f = (e || t).clone();
-		return f.source = new l(c), f.colorSpace = "", f.channel = (e || t).channel, e && t && e.channel !== t.channel && console.warn("THREE.GLTFExporter: UV channels for metalnessMap and roughnessMap textures must match."), console.warn("THREE.GLTFExporter: Merged metalnessMap and roughnessMap textures."), f;
+		l.putImageData(u, 0, 0);
+		let d = (e || t).clone();
+		return d.source = new x(s), d.colorSpace = "", d.channel = (e || t).channel, e && t && e.channel !== t.channel && console.warn("THREE.GLTFExporter: UV channels for metalnessMap and roughnessMap textures must match."), console.warn("THREE.GLTFExporter: Merged metalnessMap and roughnessMap textures."), d;
 	}
 	async buildNormalMapTextureAsync(e, t, n) {
-		e instanceof o && (e = await this.decompressTextureAsync(e));
-		let r = e.image, i = V();
+		e instanceof c && (e = await this.decompressTextureAsync(e));
+		let r = e.image, i = B();
 		i.width = r.width, i.height = r.height;
 		let a = i.getContext("2d", { willReadFrequently: !0 });
 		a.drawImage(r, 0, 0, i.width, i.height);
-		let s = a.getImageData(0, 0, i.width, i.height), c = s.data;
-		for (let e = 0; e < c.length; e += 4) t && (c[e + 0] = 255 - c[e + 0]), n && (c[e + 1] = 255 - c[e + 1]);
-		a.putImageData(s, 0, 0);
-		let u = e.clone();
-		return u.source = new l(i), u;
+		let o = a.getImageData(0, 0, i.width, i.height), s = o.data;
+		for (let e = 0; e < s.length; e += 4) t && (s[e + 0] = 255 - s[e + 0]), n && (s[e + 1] = 255 - s[e + 1]);
+		a.putImageData(o, 0, 0);
+		let l = e.clone();
+		return l.source = new x(i), l;
 	}
 	async decompressTextureAsync(e, t = Infinity) {
 		if (this.textureUtils === null) throw Error("THREE.GLTFExporter: setTextureUtils() must be called to process compressed textures.");
@@ -329,23 +329,23 @@ var U = class {
 		a.bufferViews ||= [];
 		let o;
 		switch (t) {
-			case T.BYTE:
-			case T.UNSIGNED_BYTE:
+			case E.BYTE:
+			case E.UNSIGNED_BYTE:
 				o = 1;
 				break;
-			case T.SHORT:
-			case T.UNSIGNED_SHORT:
+			case E.SHORT:
+			case E.UNSIGNED_SHORT:
 				o = 2;
 				break;
 			default: o = 4;
 		}
 		let s = e.itemSize * o;
-		i === T.ARRAY_BUFFER && (s = Math.ceil(s / 4) * 4);
-		let c = z(r * s), l = new DataView(new ArrayBuffer(c)), u = 0;
+		i === E.ARRAY_BUFFER && (s = Math.ceil(s / 4) * 4);
+		let c = R(r * s), l = new DataView(new ArrayBuffer(c)), u = 0;
 		for (let i = n; i < n + r; i++) {
 			for (let n = 0; n < e.itemSize; n++) {
 				let r;
-				e.itemSize > 4 ? r = e.array[i * e.itemSize + n] : (n === 0 ? r = e.getX(i) : n === 1 ? r = e.getY(i) : n === 2 ? r = e.getZ(i) : n === 3 && (r = e.getW(i)), e.normalized === !0 && (r = m.normalize(r, e.array))), t === T.FLOAT ? l.setFloat32(u, r, !0) : t === T.INT ? l.setInt32(u, r, !0) : t === T.UNSIGNED_INT ? l.setUint32(u, r, !0) : t === T.SHORT ? l.setInt16(u, r, !0) : t === T.UNSIGNED_SHORT ? l.setUint16(u, r, !0) : t === T.BYTE ? l.setInt8(u, r) : t === T.UNSIGNED_BYTE && l.setUint8(u, r), u += o;
+				e.itemSize > 4 ? r = e.array[i * e.itemSize + n] : (n === 0 ? r = e.getX(i) : n === 1 ? r = e.getY(i) : n === 2 ? r = e.getZ(i) : n === 3 && (r = e.getW(i)), e.normalized === !0 && (r = S.normalize(r, e.array))), t === E.FLOAT ? l.setFloat32(u, r, !0) : t === E.INT ? l.setInt32(u, r, !0) : t === E.UNSIGNED_INT ? l.setUint32(u, r, !0) : t === E.SHORT ? l.setInt16(u, r, !0) : t === E.UNSIGNED_SHORT ? l.setUint16(u, r, !0) : t === E.BYTE ? l.setInt8(u, r) : t === E.UNSIGNED_BYTE && l.setUint8(u, r), u += o;
 			}
 			u % s !== 0 && (u += s - u % s);
 		}
@@ -354,7 +354,7 @@ var U = class {
 			byteOffset: this.byteOffset,
 			byteLength: c
 		};
-		return i !== void 0 && (d.target = i), i === T.ARRAY_BUFFER && (d.byteStride = s), this.byteOffset += c, a.bufferViews.push(d), {
+		return i !== void 0 && (d.target = i), i === E.ARRAY_BUFFER && (d.byteStride = s), this.byteOffset += c, a.bufferViews.push(d), {
 			id: a.bufferViews.length - 1,
 			byteLength: 0
 		};
@@ -364,7 +364,7 @@ var U = class {
 		return n.bufferViews ||= [], new Promise(function(r) {
 			let i = new FileReader();
 			i.readAsArrayBuffer(e), i.onloadend = function() {
-				let e = B(i.result), a = {
+				let e = z(i.result), a = {
 					buffer: t.processBuffer(e),
 					byteOffset: t.byteOffset,
 					byteLength: e.byteLength
@@ -382,17 +382,17 @@ var U = class {
 			9: "MAT3",
 			16: "MAT4"
 		}, o;
-		if (e.array.constructor === Float32Array) o = T.FLOAT;
-		else if (e.array.constructor === Int32Array) o = T.INT;
-		else if (e.array.constructor === Uint32Array) o = T.UNSIGNED_INT;
-		else if (e.array.constructor === Int16Array) o = T.SHORT;
-		else if (e.array.constructor === Uint16Array) o = T.UNSIGNED_SHORT;
-		else if (e.array.constructor === Int8Array) o = T.BYTE;
-		else if (e.array.constructor === Uint8Array) o = T.UNSIGNED_BYTE;
+		if (e.array.constructor === Float32Array) o = E.FLOAT;
+		else if (e.array.constructor === Int32Array) o = E.INT;
+		else if (e.array.constructor === Uint32Array) o = E.UNSIGNED_INT;
+		else if (e.array.constructor === Int16Array) o = E.SHORT;
+		else if (e.array.constructor === Uint16Array) o = E.UNSIGNED_SHORT;
+		else if (e.array.constructor === Int8Array) o = E.BYTE;
+		else if (e.array.constructor === Uint8Array) o = E.UNSIGNED_BYTE;
 		else throw Error("THREE.GLTFExporter: Unsupported bufferAttribute component type: " + e.array.constructor.name);
 		if (n === void 0 && (n = 0), (r === void 0 || r === Infinity) && (r = e.count), r === 0) return null;
-		let s = R(e, n, r), c;
-		t !== void 0 && (c = e === t.index ? T.ELEMENT_ARRAY_BUFFER : T.ARRAY_BUFFER);
+		let s = L(e, n, r), c;
+		t !== void 0 && (c = e === t.index ? E.ELEMENT_ARRAY_BUFFER : E.ARRAY_BUFFER);
 		let l = this.processBufferView(e, o, n, r, c), u = {
 			bufferView: l.id,
 			byteOffset: l.byteOffset,
@@ -411,21 +411,21 @@ var U = class {
 			let l = a.images.get(e), u = r + ":flipY/" + n.toString();
 			if (l[u] !== void 0) return l[u];
 			o.images ||= [];
-			let d = { mimeType: r }, f = V();
-			f.width = Math.min(e.width, s.maxTextureSize), f.height = Math.min(e.height, s.maxTextureSize);
-			let p = f.getContext("2d", { willReadFrequently: !0 });
-			if (n === !0 && (p.translate(0, f.height), p.scale(1, -1)), e.data !== void 0) {
+			let d = { mimeType: r }, p = B();
+			p.width = Math.min(e.width, s.maxTextureSize), p.height = Math.min(e.height, s.maxTextureSize);
+			let m = p.getContext("2d", { willReadFrequently: !0 });
+			if (n === !0 && (m.translate(0, p.height), m.scale(1, -1)), e.data !== void 0) {
 				t !== 1023 && console.error("GLTFExporter: Only RGBAFormat is supported.", t), (e.width > s.maxTextureSize || e.height > s.maxTextureSize) && console.warn("GLTFExporter: Image size is bigger than maxTextureSize", e);
 				let n = new Uint8ClampedArray(e.height * e.width * 4);
 				for (let t = 0; t < n.length; t += 4) n[t + 0] = e.data[t + 0], n[t + 1] = e.data[t + 1], n[t + 2] = e.data[t + 2], n[t + 3] = e.data[t + 3];
-				p.putImageData(new ImageData(n, e.width, e.height), 0, 0);
-			} else if (typeof HTMLImageElement < "u" && e instanceof HTMLImageElement || typeof HTMLCanvasElement < "u" && e instanceof HTMLCanvasElement || typeof ImageBitmap < "u" && e instanceof ImageBitmap || typeof OffscreenCanvas < "u" && e instanceof OffscreenCanvas) p.drawImage(e, 0, 0, f.width, f.height);
+				m.putImageData(new ImageData(n, e.width, e.height), 0, 0);
+			} else if (typeof HTMLImageElement < "u" && e instanceof HTMLImageElement || typeof HTMLCanvasElement < "u" && e instanceof HTMLCanvasElement || typeof ImageBitmap < "u" && e instanceof ImageBitmap || typeof OffscreenCanvas < "u" && e instanceof OffscreenCanvas) m.drawImage(e, 0, 0, p.width, p.height);
 			else throw Error("THREE.GLTFExporter: Invalid image type. Use HTMLImageElement, HTMLCanvasElement, ImageBitmap or OffscreenCanvas.");
-			s.binary === !0 ? c.push(H(f, r).then((e) => i.processBufferViewImage(e)).then((e) => {
+			s.binary === !0 ? c.push(V(p, r).then((e) => i.processBufferViewImage(e)).then((e) => {
 				d.bufferView = e;
-			})) : d.uri = g.getDataURL(f, r);
-			let m = o.images.push(d) - 1;
-			return l[u] = m, m;
+			})) : d.uri = f.getDataURL(p, r);
+			let h = o.images.push(d) - 1;
+			return l[u] = h, h;
 		}
 		throw Error("THREE.GLTFExporter: No valid image data found. Unable to process texture.");
 	}
@@ -433,23 +433,23 @@ var U = class {
 		let t = this.json;
 		t.samplers ||= [];
 		let n = {
-			magFilter: D[e.magFilter],
-			minFilter: D[e.minFilter],
-			wrapS: D[e.wrapS],
-			wrapT: D[e.wrapT]
+			magFilter: O[e.magFilter],
+			minFilter: O[e.minFilter],
+			wrapS: O[e.wrapS],
+			wrapT: O[e.wrapT]
 		};
 		return t.samplers.push(n) - 1;
 	}
 	async processTextureAsync(e) {
 		let t = this.options, n = this.cache, r = this.json;
 		if (n.textures.has(e)) return n.textures.get(e);
-		r.textures ||= [], e instanceof o && (e = await this.decompressTextureAsync(e, t.maxTextureSize));
-		let i = e.userData.mimeType, a = this.processImage(e.image, e.format, e.flipY, i), s = { sampler: this.processSampler(e) };
-		i === "image/webp" ? (s.extensions = s.extensions || {}, s.extensions.EXT_texture_webp = { source: a }, this.extensionsUsed.EXT_texture_webp = !0, this.extensionsRequired.EXT_texture_webp = !0) : s.source = a, e.name && (s.name = e.name), await this._invokeAllAsync(async function(t) {
-			t.writeTexture && await t.writeTexture(e, s);
+		r.textures ||= [], e instanceof c && (e = await this.decompressTextureAsync(e, t.maxTextureSize));
+		let i = e.userData.mimeType, a = this.processImage(e.image, e.format, e.flipY, i), o = { sampler: this.processSampler(e) };
+		i === "image/webp" ? (o.extensions = o.extensions || {}, o.extensions.EXT_texture_webp = { source: a }, this.extensionsUsed.EXT_texture_webp = !0, this.extensionsRequired.EXT_texture_webp = !0) : o.source = a, e.name && (o.name = e.name), await this._invokeAllAsync(async function(t) {
+			t.writeTexture && await t.writeTexture(e, o);
 		});
-		let c = r.textures.push(s) - 1;
-		return n.textures.set(e, c), c;
+		let s = r.textures.push(o) - 1;
+		return n.textures.set(e, s), s;
 	}
 	async processMaterialAsync(e, t) {
 		let n = this.cache, r = this.json, i = t !== void 0 && t.hasAttribute("tangent"), a = e.normalMap ? e.uuid + ":" + i : e.uuid;
@@ -459,7 +459,7 @@ var U = class {
 		let o = { pbrMetallicRoughness: {} };
 		e.isMeshStandardMaterial !== !0 && e.isMeshBasicMaterial !== !0 && console.warn("GLTFExporter: Use MeshStandardMaterial or MeshBasicMaterial for best results.");
 		let s = e.color.toArray().concat([e.opacity]);
-		if (F(s, [
+		if (P(s, [
 			1,
 			1,
 			1,
@@ -521,7 +521,7 @@ var U = class {
 		let i = r.join(":");
 		if (t.meshes.has(i)) return t.meshes.get(i);
 		let a = e.geometry, o;
-		o = e.isLineSegments ? T.LINES : e.isLineLoop ? T.LINE_LOOP : e.isLine ? T.LINE_STRIP : e.isPoints ? T.POINTS : e.material.wireframe ? T.LINES : T.TRIANGLES;
+		o = e.isLineSegments ? E.LINES : e.isLineLoop ? E.LINE_LOOP : e.isLine ? E.LINE_STRIP : e.isPoints ? E.POINTS : e.material.wireframe ? E.LINES : E.TRIANGLES;
 		let s = {}, c = {}, l = [], u = [], d = {
 			uv: "TEXCOORD_0",
 			uv1: "TEXCOORD_1",
@@ -542,7 +542,7 @@ var U = class {
 			}
 			p = null;
 			let r = n.array;
-			e === "JOINTS_0" && !(r instanceof Uint16Array) && !(r instanceof Uint8Array) ? (console.warn("GLTFExporter: Attribute \"skinIndex\" converted to type UNSIGNED_SHORT."), p = w.Utils.toTypedBufferAttribute(n, Uint16Array)) : (r instanceof Uint32Array || r instanceof Int32Array) && !e.startsWith("_") && (console.warn(`GLTFExporter: Attribute "${e}" converted to type FLOAT.`), p = w.Utils.toTypedBufferAttribute(n, Float32Array));
+			e === "JOINTS_0" && !(r instanceof Uint16Array) && !(r instanceof Uint8Array) ? (console.warn("GLTFExporter: Attribute \"skinIndex\" converted to type UNSIGNED_SHORT."), p = T.Utils.toTypedBufferAttribute(n, Uint16Array)) : (r instanceof Uint32Array || r instanceof Int32Array) && !e.startsWith("_") && (console.warn(`GLTFExporter: Attribute "${e}" converted to type FLOAT.`), p = T.Utils.toTypedBufferAttribute(n, Float32Array));
 			let i = this.processAccessor(p || n, a);
 			i !== null && (e.startsWith("_") || this.detectMeshQuantization(e, n), c[e] = i, t.attributes.set(this.getUID(n), i));
 		}
@@ -602,7 +602,7 @@ var U = class {
 		return t.meshes.set(i, v), v;
 	}
 	detectMeshQuantization(e, t) {
-		if (this.extensionsUsed[E]) return;
+		if (this.extensionsUsed[D]) return;
 		let n;
 		switch (t.array.constructor) {
 			case Int8Array:
@@ -621,7 +621,7 @@ var U = class {
 		}
 		t.normalized && (n += " normalized");
 		let r = e.split("_", 1)[0];
-		C[r] && C[r].includes(n) && (this.extensionsUsed[E] = !0, this.extensionsRequired[E] = !0);
+		w[r] && w[r].includes(n) && (this.extensionsUsed[D] = !0, this.extensionsRequired[D] = !0);
 	}
 	processCamera(e) {
 		let t = this.json;
@@ -634,55 +634,55 @@ var U = class {
 			znear: e.near < 0 ? 0 : e.near
 		} : r.perspective = {
 			aspectRatio: e.aspect,
-			yfov: m.degToRad(e.fov),
+			yfov: S.degToRad(e.fov),
 			zfar: e.far <= 0 ? .001 : e.far,
 			znear: e.near < 0 ? 0 : e.near
 		}, e.name !== "" && (r.name = e.type), t.cameras.push(r) - 1;
 	}
 	processAnimation(e, t) {
-		let n = this.json, r = this.nodeMap;
-		n.animations ||= [], e = w.Utils.mergeMorphTargetTracks(e.clone(), t);
-		let i = e.tracks, a = [], o = [];
-		for (let e = 0; e < i.length; ++e) {
-			let n = i[e], s = c.parseTrackName(n.name), l = c.findNode(t, s.nodeName), d = O[s.propertyName];
-			if (s.objectName === "bones" && (l = l.isSkinnedMesh === !0 ? l.skeleton.getBoneByName(s.objectIndex) : void 0), !l || !d) {
+		let n = this.json, i = this.nodeMap;
+		n.animations ||= [], e = T.Utils.mergeMorphTargetTracks(e.clone(), t);
+		let a = e.tracks, o = [], s = [];
+		for (let e = 0; e < a.length; ++e) {
+			let n = a[e], c = C.parseTrackName(n.name), l = C.findNode(t, c.nodeName), u = k[c.propertyName];
+			if (c.objectName === "bones" && (l = l.isSkinnedMesh === !0 ? l.skeleton.getBoneByName(c.objectIndex) : void 0), !l || !u) {
 				console.warn("THREE.GLTFExporter: Could not export animation track \"%s\".", n.name);
 				continue;
 			}
-			let f = n.values.length / n.times.length;
-			d === O.morphTargetInfluences && (f /= l.morphTargetInfluences.length);
-			let p;
-			n.createInterpolant.isInterpolantFactoryMethodGLTFCubicSpline === !0 ? (p = "CUBICSPLINE", f /= 3) : p = n.getInterpolation() === 2300 ? "STEP" : "LINEAR", o.push({
-				input: this.processAccessor(new u(n.times, 1)),
-				output: this.processAccessor(new u(n.values, f)),
-				interpolation: p
-			}), a.push({
-				sampler: o.length - 1,
+			let d = n.values.length / n.times.length;
+			u === k.morphTargetInfluences && (d /= l.morphTargetInfluences.length);
+			let f;
+			n.createInterpolant.isInterpolantFactoryMethodGLTFCubicSpline === !0 ? (f = "CUBICSPLINE", d /= 3) : f = n.getInterpolation() === 2300 ? "STEP" : "LINEAR", s.push({
+				input: this.processAccessor(new r(n.times, 1)),
+				output: this.processAccessor(new r(n.values, d)),
+				interpolation: f
+			}), o.push({
+				sampler: s.length - 1,
 				target: {
-					node: r.get(l),
-					path: d
+					node: i.get(l),
+					path: u
 				}
 			});
 		}
-		let s = {
+		let c = {
 			name: e.name || "clip_" + n.animations.length,
-			samplers: o,
-			channels: a
+			samplers: s,
+			channels: o
 		};
-		return this.serializeUserData(e, s), n.animations.push(s), n.animations.length - 1;
+		return this.serializeUserData(e, c), n.animations.push(c), n.animations.length - 1;
 	}
 	processSkin(e) {
-		let t = this.json, n = this.nodeMap, r = t.nodes[n.get(e)], i = e.skeleton;
-		if (i === void 0) return null;
-		let a = e.skeleton.bones[0];
+		let t = this.json, n = this.nodeMap, i = t.nodes[n.get(e)], a = e.skeleton;
 		if (a === void 0) return null;
-		let o = [], s = new Float32Array(i.bones.length * 16), c = new p();
-		for (let t = 0; t < i.bones.length; ++t) o.push(n.get(i.bones[t])), c.copy(i.boneInverses[t]), c.multiply(e.bindMatrix).toArray(s, t * 16);
+		let o = e.skeleton.bones[0];
+		if (o === void 0) return null;
+		let s = [], c = new Float32Array(a.bones.length * 16), l = new p();
+		for (let t = 0; t < a.bones.length; ++t) s.push(n.get(a.bones[t])), l.copy(a.boneInverses[t]), l.multiply(e.bindMatrix).toArray(c, t * 16);
 		return t.skins === void 0 && (t.skins = []), t.skins.push({
-			inverseBindMatrices: this.processAccessor(new u(s, 16)),
-			joints: o,
-			skeleton: n.get(a)
-		}), r.skin = t.skins.length - 1;
+			inverseBindMatrices: this.processAccessor(new r(c, 16)),
+			joints: s,
+			skeleton: n.get(o)
+		}), i.skin = t.skins.length - 1;
 	}
 	async processNodeAsync(e) {
 		let t = this.json, n = this.options, r = this.nodeMap;
@@ -690,21 +690,21 @@ var U = class {
 		let i = {};
 		if (n.trs) {
 			let t = e.quaternion.toArray(), n = e.position.toArray(), r = e.scale.toArray();
-			F(t, [
+			P(t, [
 				0,
 				0,
 				0,
 				1
-			]) || (i.rotation = t), F(n, [
+			]) || (i.rotation = t), P(n, [
 				0,
 				0,
 				0
-			]) || (i.translation = n), F(r, [
+			]) || (i.translation = n), P(r, [
 				1,
 				1,
 				1
 			]) || (i.scale = r);
-		} else e.matrixAutoUpdate && e.updateMatrix(), L(e.matrix) === !1 && (i.matrix = e.matrix.elements);
+		} else e.matrixAutoUpdate && e.updateMatrix(), I(e.matrix) === !1 && (i.matrix = e.matrix.elements);
 		if (e.name !== "" && (i.name = String(e.name)), this.serializeUserData(e, i), e.isMesh || e.isLine || e.isPoints) {
 			let t = await this.processMeshAsync(e);
 			t !== null && (i.mesh = t);
@@ -732,16 +732,16 @@ var U = class {
 			e.position.y + i.y,
 			e.position.z + i.z
 		], c = e.scale.toArray();
-		F(o, [
+		P(o, [
 			0,
 			0,
 			0,
 			1
-		]) || (a.rotation = o), F(s, [
+		]) || (a.rotation = o), P(s, [
 			0,
 			0,
 			0
-		]) || (a.translation = s), F(c, [
+		]) || (a.translation = s), P(c, [
 			1,
 			1,
 			1
@@ -753,7 +753,7 @@ var U = class {
 			-i.y,
 			-i.z
 		];
-		if (F(d, [
+		if (P(d, [
 			0,
 			0,
 			0
@@ -794,7 +794,7 @@ var U = class {
 		i.length > 0 && (r.nodes = i), this.serializeUserData(e, r);
 	}
 	async processObjectsAsync(e) {
-		let t = new a();
+		let t = new b();
 		t.name = "AuxScene";
 		for (let n = 0; n < e.length; n++) t.children.push(e[n]);
 		await this.processSceneAsync(t);
@@ -805,7 +805,7 @@ var U = class {
 			t.beforeParse && t.beforeParse(e);
 		});
 		let n = [];
-		for (let t = 0; t < e.length; t++) e[t] instanceof a ? await this.processSceneAsync(e[t]) : n.push(e[t]);
+		for (let t = 0; t < e.length; t++) e[t] instanceof b ? await this.processSceneAsync(e[t]) : n.push(e[t]);
 		n.length > 0 && await this.processObjectsAsync(n);
 		for (let e = 0; e < this.skins.length; ++e) this.processSkin(this.skins[e]);
 		if (e.length === 1) for (let n = 0; n < t.animations.length; ++n) this.processAnimation(t.animations[n], e[0]);
@@ -820,7 +820,7 @@ var U = class {
 	async _invokeAllAsync(e) {
 		for (let t = 0, n = this.plugins.length; t < n; t++) await e(this.plugins[t]);
 	}
-}, W = class {
+}, U = class {
 	constructor(e) {
 		this.writer = e, this.name = "KHR_lights_punctual";
 	}
@@ -835,7 +835,7 @@ var U = class {
 		let o = r.extensions[this.name].lights;
 		o.push(a), t.extensions = t.extensions || {}, t.extensions[this.name] = { light: o.length - 1 };
 	}
-}, G = class {
+}, W = class {
 	constructor(e) {
 		this.writer = e, this.name = "KHR_materials_unlit";
 	}
@@ -844,7 +844,7 @@ var U = class {
 		let n = this.writer.extensionsUsed;
 		t.extensions = t.extensions || {}, t.extensions[this.name] = {}, n[this.name] = !0, t.pbrMetallicRoughness.metallicFactor = 0, t.pbrMetallicRoughness.roughnessFactor = .9;
 	}
-}, K = class {
+}, G = class {
 	constructor(e) {
 		this.writer = e, this.name = "KHR_materials_clearcoat";
 	}
@@ -874,7 +874,7 @@ var U = class {
 		}
 		t.extensions = t.extensions || {}, t.extensions[this.name] = i, r[this.name] = !0;
 	}
-}, q = class {
+}, K = class {
 	constructor(e) {
 		this.writer = e, this.name = "KHR_materials_dispersion";
 	}
@@ -883,7 +883,7 @@ var U = class {
 		let n = this.writer.extensionsUsed, r = {};
 		r.dispersion = e.dispersion, t.extensions = t.extensions || {}, t.extensions[this.name] = r, n[this.name] = !0;
 	}
-}, J = class {
+}, q = class {
 	constructor(e) {
 		this.writer = e, this.name = "KHR_materials_iridescence";
 	}
@@ -906,7 +906,7 @@ var U = class {
 		}
 		t.extensions = t.extensions || {}, t.extensions[this.name] = i, r[this.name] = !0;
 	}
-}, Y = class {
+}, J = class {
 	constructor(e) {
 		this.writer = e, this.name = "KHR_materials_transmission";
 	}
@@ -922,7 +922,7 @@ var U = class {
 		}
 		t.extensions = t.extensions || {}, t.extensions[this.name] = i, r[this.name] = !0;
 	}
-}, X = class {
+}, Y = class {
 	constructor(e) {
 		this.writer = e, this.name = "KHR_materials_volume";
 	}
@@ -938,7 +938,7 @@ var U = class {
 		}
 		e.attenuationDistance !== Infinity && (i.attenuationDistance = e.attenuationDistance), i.attenuationColor = e.attenuationColor.toArray(), t.extensions = t.extensions || {}, t.extensions[this.name] = i, r[this.name] = !0;
 	}
-}, Z = class {
+}, ie = class {
 	constructor(e) {
 		this.writer = e, this.name = "KHR_materials_ior";
 	}
@@ -947,12 +947,12 @@ var U = class {
 		let n = this.writer.extensionsUsed, r = {};
 		r.ior = e.ior, t.extensions = t.extensions || {}, t.extensions[this.name] = r, n[this.name] = !0;
 	}
-}, ne = class {
+}, ae = class {
 	constructor(e) {
 		this.writer = e, this.name = "KHR_materials_specular";
 	}
 	async writeMaterialAsync(e, t) {
-		if (!e.isMeshPhysicalMaterial || e.specularIntensity === 1 && e.specularColor.equals(k) && !e.specularIntensityMap && !e.specularColorMap) return;
+		if (!e.isMeshPhysicalMaterial || e.specularIntensity === 1 && e.specularColor.equals(te) && !e.specularIntensityMap && !e.specularColorMap) return;
 		let n = this.writer, r = n.extensionsUsed, i = {};
 		if (e.specularIntensityMap) {
 			let t = {
@@ -970,7 +970,7 @@ var U = class {
 		}
 		i.specularFactor = e.specularIntensity, i.specularColorFactor = e.specularColor.toArray(), t.extensions = t.extensions || {}, t.extensions[this.name] = i, r[this.name] = !0;
 	}
-}, re = class {
+}, oe = class {
 	constructor(e) {
 		this.writer = e, this.name = "KHR_materials_sheen";
 	}
@@ -993,7 +993,7 @@ var U = class {
 		}
 		i.sheenRoughnessFactor = e.sheenRoughness, i.sheenColorFactor = e.sheenColor.toArray(), t.extensions = t.extensions || {}, t.extensions[this.name] = i, r[this.name] = !0;
 	}
-}, ie = class {
+}, se = class {
 	constructor(e) {
 		this.writer = e, this.name = "KHR_materials_anisotropy";
 	}
@@ -1006,7 +1006,7 @@ var U = class {
 		}
 		i.anisotropyStrength = e.anisotropy, i.anisotropyRotation = e.anisotropyRotation, t.extensions = t.extensions || {}, t.extensions[this.name] = i, r[this.name] = !0;
 	}
-}, ae = class {
+}, ce = class {
 	constructor(e) {
 		this.writer = e, this.name = "KHR_materials_emissive_strength";
 	}
@@ -1015,7 +1015,7 @@ var U = class {
 		let n = this.writer.extensionsUsed, r = {};
 		r.emissiveStrength = e.emissiveIntensity, t.extensions = t.extensions || {}, t.extensions[this.name] = r, n[this.name] = !0;
 	}
-}, oe = class {
+}, le = class {
 	constructor(e) {
 		this.writer = e, this.name = "EXT_materials_bump";
 	}
@@ -1031,23 +1031,23 @@ var U = class {
 		}
 		i.bumpFactor = e.bumpScale, t.extensions = t.extensions || {}, t.extensions[this.name] = i, r[this.name] = !0;
 	}
-}, se = class {
+}, X = class {
 	constructor(e) {
 		this.writer = e, this.name = "EXT_mesh_gpu_instancing";
 	}
 	writeNode(e, t) {
 		if (!e.isInstancedMesh) return;
-		let n = this.writer, r = e, a = new Float32Array(r.count * 3), o = new Float32Array(r.count * 4), s = new Float32Array(r.count * 3), c = new p(), l = new _(), d = new i(), f = new _();
-		for (let e = 0; e < r.count; e++) r.getMatrixAt(e, c), c.decompose(l, d, f), l.toArray(a, e * 3), d.toArray(o, e * 4), f.toArray(s, e * 3);
+		let i = this.writer, a = e, o = new Float32Array(a.count * 3), s = new Float32Array(a.count * 4), c = new Float32Array(a.count * 3), l = new p(), u = new _(), d = new n(), f = new _();
+		for (let e = 0; e < a.count; e++) a.getMatrixAt(e, l), l.decompose(u, d, f), u.toArray(o, e * 3), d.toArray(s, e * 4), f.toArray(c, e * 3);
 		let m = {
-			TRANSLATION: n.processAccessor(new u(a, 3)),
-			ROTATION: n.processAccessor(new u(o, 4)),
-			SCALE: n.processAccessor(new u(s, 3))
+			TRANSLATION: i.processAccessor(new r(o, 3)),
+			ROTATION: i.processAccessor(new r(s, 4)),
+			SCALE: i.processAccessor(new r(c, 3))
 		};
-		r.instanceColor && (m._COLOR_0 = n.processAccessor(r.instanceColor)), t.extensions = t.extensions || {}, t.extensions[this.name] = { attributes: m }, n.extensionsUsed[this.name] = !0, n.extensionsRequired[this.name] = !0;
+		a.instanceColor && (m._COLOR_0 = i.processAccessor(a.instanceColor)), t.extensions = t.extensions || {}, t.extensions[this.name] = { attributes: m }, i.extensionsUsed[this.name] = !0, i.extensionsRequired[this.name] = !0;
 	}
 };
-w.Utils = {
+T.Utils = {
 	insertKeyframe: function(e, t) {
 		let n = .001, r = e.getValueSize(), i = new e.TimeBufferType(e.times.length + 1), a = new e.ValueBufferType(e.values.length + r), o = e.createInterpolant(new e.ValueBufferType(r)), s;
 		if (e.times.length === 0) {
@@ -1072,7 +1072,7 @@ w.Utils = {
 	mergeMorphTargetTracks: function(e, t) {
 		let n = [], r = {}, i = e.tracks;
 		for (let e = 0; e < i.length; ++e) {
-			let a = i[e], o = c.parseTrackName(a.name), s = c.findNode(t, o.nodeName);
+			let a = i[e], o = C.parseTrackName(a.name), s = C.findNode(t, o.nodeName);
 			if (o.propertyName !== "morphTargetInfluences" || o.propertyIndex === void 0) {
 				n.push(a);
 				continue;
@@ -1081,33 +1081,111 @@ w.Utils = {
 				if (a.createInterpolant.isInterpolantFactoryMethodGLTFCubicSpline) throw Error("THREE.GLTFExporter: Cannot merge tracks with glTF CUBICSPLINE interpolation.");
 				console.warn("THREE.GLTFExporter: Morph target interpolation mode not yet supported. Using LINEAR instead."), a = a.clone(), a.setInterpolation(y);
 			}
-			let l = s.morphTargetInfluences.length, u = s.morphTargetDictionary[o.propertyIndex];
-			if (u === void 0) throw Error("THREE.GLTFExporter: Morph target name not found: " + o.propertyIndex);
-			let d;
+			let c = s.morphTargetInfluences.length, l = s.morphTargetDictionary[o.propertyIndex];
+			if (l === void 0) throw Error("THREE.GLTFExporter: Morph target name not found: " + o.propertyIndex);
+			let u;
 			if (r[s.uuid] === void 0) {
-				d = a.clone();
-				let e = new d.ValueBufferType(l * d.times.length);
-				for (let t = 0; t < d.times.length; t++) e[t * l + u] = d.values[t];
-				d.name = (o.nodeName || "") + ".morphTargetInfluences", d.values = e, r[s.uuid] = d, n.push(d);
+				u = a.clone();
+				let e = new u.ValueBufferType(c * u.times.length);
+				for (let t = 0; t < u.times.length; t++) e[t * c + l] = u.values[t];
+				u.name = (o.nodeName || "") + ".morphTargetInfluences", u.values = e, r[s.uuid] = u, n.push(u);
 				continue;
 			}
-			let f = a.createInterpolant(new a.ValueBufferType(1));
-			d = r[s.uuid];
-			for (let e = 0; e < d.times.length; e++) d.values[e * l + u] = f.evaluate(d.times[e]);
+			let d = a.createInterpolant(new a.ValueBufferType(1));
+			u = r[s.uuid];
+			for (let e = 0; e < u.times.length; e++) u.values[e * c + l] = d.evaluate(u.times[e]);
 			for (let e = 0; e < a.times.length; e++) {
-				let t = this.insertKeyframe(d, a.times[e]);
-				d.values[t * l + u] = a.values[e];
+				let t = this.insertKeyframe(u, a.times[e]);
+				u.values[t * c + l] = a.values[e];
 			}
 		}
 		return e.tracks = n, e;
 	},
 	toTypedBufferAttribute: function(e, t) {
-		let n = new u(new t(e.count * e.itemSize), e.itemSize, !1);
+		let n = new r(new t(e.count * e.itemSize), e.itemSize, !1);
 		if (!e.normalized && !e.isInterleavedBufferAttribute) return n.array.set(e.array), n;
 		for (let t = 0, r = e.count; t < r; t++) for (let r = 0; r < e.itemSize; r++) n.setComponent(t, r, e.getComponent(t, r));
 		return n;
 	}
 };
+//#endregion
+//#region node_modules/three/examples/jsm/utils/BufferGeometryUtils.js
+function ue(e, t = !1) {
+	let n = e[0].index !== null, r = new Set(Object.keys(e[0].attributes)), i = new Set(Object.keys(e[0].morphAttributes)), a = {}, o = {}, s = e[0].morphTargetsRelative, c = new u(), l = 0;
+	for (let u = 0; u < e.length; ++u) {
+		let d = e[u], f = 0;
+		if (n !== (d.index !== null)) return console.error("THREE.BufferGeometryUtils: .mergeGeometries() failed with geometry at index " + u + ". All geometries must have compatible attributes; make sure index attribute exists among all geometries, or in none of them."), null;
+		for (let e in d.attributes) {
+			if (!r.has(e)) return console.error("THREE.BufferGeometryUtils: .mergeGeometries() failed with geometry at index " + u + ". All geometries must have compatible attributes; make sure \"" + e + "\" attribute exists among all geometries, or in none of them."), null;
+			a[e] === void 0 && (a[e] = []), a[e].push(d.attributes[e]), f++;
+		}
+		if (f !== r.size) return console.error("THREE.BufferGeometryUtils: .mergeGeometries() failed with geometry at index " + u + ". Make sure all geometries have the same number of attributes."), null;
+		if (s !== d.morphTargetsRelative) return console.error("THREE.BufferGeometryUtils: .mergeGeometries() failed with geometry at index " + u + ". .morphTargetsRelative must be consistent throughout all geometries."), null;
+		for (let e in d.morphAttributes) {
+			if (!i.has(e)) return console.error("THREE.BufferGeometryUtils: .mergeGeometries() failed with geometry at index " + u + ".  .morphAttributes must be consistent throughout all geometries."), null;
+			o[e] === void 0 && (o[e] = []), o[e].push(d.morphAttributes[e]);
+		}
+		if (t) {
+			let e;
+			if (n) e = d.index.count;
+			else if (d.attributes.position !== void 0) e = d.attributes.position.count;
+			else return console.error("THREE.BufferGeometryUtils: .mergeGeometries() failed with geometry at index " + u + ". The geometry must have either an index or a position attribute"), null;
+			c.addGroup(l, e, u), l += e;
+		}
+	}
+	if (n) {
+		let t = 0, n = [];
+		for (let r = 0; r < e.length; ++r) {
+			let i = e[r].index;
+			for (let e = 0; e < i.count; ++e) n.push(i.getX(e) + t);
+			t += e[r].attributes.position.count;
+		}
+		c.setIndex(n);
+	}
+	for (let e in a) {
+		let t = Z(a[e]);
+		if (!t) return console.error("THREE.BufferGeometryUtils: .mergeGeometries() failed while trying to merge the " + e + " attribute."), null;
+		c.setAttribute(e, t);
+	}
+	for (let e in o) {
+		let t = o[e][0].length;
+		if (t !== 0) {
+			c.morphAttributes = c.morphAttributes || {}, c.morphAttributes[e] = [];
+			for (let n = 0; n < t; ++n) {
+				let t = [];
+				for (let r = 0; r < o[e].length; ++r) t.push(o[e][r][n]);
+				let r = Z(t);
+				if (!r) return console.error("THREE.BufferGeometryUtils: .mergeGeometries() failed while trying to merge the " + e + " morphAttribute."), null;
+				c.morphAttributes[e].push(r);
+			}
+		}
+	}
+	return c;
+}
+function Z(e) {
+	let t, n, i, a = -1, o = 0;
+	for (let r = 0; r < e.length; ++r) {
+		let s = e[r];
+		if (t === void 0 && (t = s.array.constructor), t !== s.array.constructor) return console.error("THREE.BufferGeometryUtils: .mergeAttributes() failed. BufferAttribute.array must be of consistent array types across matching attributes."), null;
+		if (n === void 0 && (n = s.itemSize), n !== s.itemSize) return console.error("THREE.BufferGeometryUtils: .mergeAttributes() failed. BufferAttribute.itemSize must be consistent across matching attributes."), null;
+		if (i === void 0 && (i = s.normalized), i !== s.normalized) return console.error("THREE.BufferGeometryUtils: .mergeAttributes() failed. BufferAttribute.normalized must be consistent across matching attributes."), null;
+		if (a === -1 && (a = s.gpuType), a !== s.gpuType) return console.error("THREE.BufferGeometryUtils: .mergeAttributes() failed. BufferAttribute.gpuType must be consistent across matching attributes."), null;
+		o += s.count * n;
+	}
+	let s = new t(o), c = new r(s, n, i), l = 0;
+	for (let t = 0; t < e.length; ++t) {
+		let r = e[t];
+		if (r.isInterleavedBufferAttribute) {
+			let e = l / n;
+			for (let t = 0, i = r.count; t < i; t++) for (let i = 0; i < n; i++) {
+				let n = r.getComponent(t, i);
+				c.setComponent(t + e, i, n);
+			}
+		} else s.set(r.array, l);
+		l += r.count * n;
+	}
+	return a !== void 0 && (c.gpuType = a), c;
+}
 //#endregion
 //#region node_modules/three/examples/jsm/geometries/RoundedBoxGeometry.js
 var Q = new _();
@@ -1117,7 +1195,7 @@ function $(e, t, n, r, i, a) {
 	let l = .5 * o / (o + s), u = 1 - Q.angleTo(e) / c;
 	return Math.sign(Q[n]) === 1 ? u * l : s / (o + s) + l + l * (1 - u);
 }
-var ce = class e extends S {
+var de = class e extends a {
 	constructor(e = 1, t = 1, n = 1, r = 2, i = .1) {
 		let a = r * 2 + 1;
 		if (i = Math.min(e / 2, t / 2, n / 2, i), super(1, 1, 1, a, a, a), this.type = "RoundedBoxGeometry", this.parameters = {
@@ -1154,4 +1232,4 @@ var ce = class e extends S {
 	}
 };
 //#endregion
-export { ee as n, ce as t };
+export { ue as n, ee as r, de as t };

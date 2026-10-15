@@ -2,7 +2,7 @@ import { Suspense, useEffect, useMemo } from 'react'
 import * as THREE from 'three'
 import { Canvas, useThree } from '@react-three/fiber'
 import { CameraControls, Environment, Lightformer, PerformanceMonitor } from '@react-three/drei'
-import { EffectComposer, N8AO, Outline, Selection, SMAA, ToneMapping, Vignette } from '@react-three/postprocessing'
+import { Bloom, BrightnessContrast, DepthOfField, EffectComposer, HueSaturation, N8AO, Outline, Selection, SMAA, ToneMapping, Vignette } from '@react-three/postprocessing'
 import { ToneMappingMode } from 'postprocessing'
 import type CameraControlsImpl from 'camera-controls'
 import { useConfigurator, type Snapshot } from '../store/useConfigurator'
@@ -11,6 +11,7 @@ import { TIERS } from '../lib/capabilities'
 import { Component, lazy, type ReactNode } from 'react'
 import { Interior, Podium } from './Interior'
 import { fixedKindOf } from './materials'
+import { assetRoot } from './scan'
 const GlbInterior = lazy(() => import('./GlbInterior'))
 
 /** Si le GLB est introuvable ou invalide, on revient au prototype procédural. */
@@ -99,7 +100,7 @@ function Bridge() {
   return null
 }
 
-function Env() {
+function EnvLights() {
   const lighting = useConfigurator((s) => s.lighting)
   const tier = useConfigurator((s) => s.tier)
   const res = TIERS[tier].envRes
@@ -142,6 +143,36 @@ function Env() {
   )
 }
 
+const HDRI: Record<string, { file: string; intensity: number; rot: number }> = {
+  showroom: { file: 'monochrome_studio_01.hdr', intensity: 1.15, rot: 0.6 },
+  day: { file: 'kloofendal_48d_partly_cloudy_puresky.hdr', intensity: 1.3, rot: 2.2 },
+  night: { file: 'dikhololo_night.hdr', intensity: 1.1, rot: 0 },
+}
+
+/** Éclairage HDRI (studio / ciel / nuit). Repli sur les panneaux lumineux si le fichier manque ou en profil Mobile. */
+class HdriGuard extends Component<{ children: ReactNode; fallback: ReactNode }, { err: boolean }> {
+  state = { err: false }
+  static getDerivedStateFromError() { return { err: true } }
+  render() { return this.state.err ? this.props.fallback : this.props.children }
+}
+
+function Env() {
+  const lighting = useConfigurator((s) => s.lighting)
+  const tier = useConfigurator((s) => s.tier)
+  const bg = lighting === 'night' ? '#02030a' : lighting === 'day' ? '#a8c0d8' : '#050505'
+  const { scene } = useThree()
+  useEffect(() => { scene.background = new THREE.Color(bg) }, [scene, bg])
+  if (tier === 'low') return <EnvLights />
+  const h = HDRI[lighting]
+  return (
+    <HdriGuard key={lighting + tier} fallback={<EnvLights />}>
+      <Suspense fallback={<EnvLights />}>
+        <Environment files={`${assetRoot()}hdri/${h.file}`} background={false} environmentIntensity={h.intensity} environmentRotation={[0, h.rot, 0]} />
+      </Suspense>
+    </HdriGuard>
+  )
+}
+
 function Lights() {
   const lighting = useConfigurator((s) => s.lighting)
   const tier = useConfigurator((s) => s.tier)
@@ -178,15 +209,22 @@ function Lights() {
 
 function Post() {
   const tier = useConfigurator((s) => s.tier)
+  const view = useConfigurator((s) => s.view)
+  const lighting = useConfigurator((s) => s.lighting)
   const T = TIERS[tier]
   if (!T.post) return null
+  const ultra = tier === 'high'
   return (
-    <EffectComposer multisampling={0} enableNormalPass={false} autoClear={false}>
+    <EffectComposer multisampling={ultra ? 4 : 0} enableNormalPass={false} autoClear={false}>
       {T.ao ? <N8AO aoRadius={0.45} distanceFalloff={0.9} intensity={2.4} quality="medium" halfRes /> : <></>}
       {T.outline ? <Outline blur edgeStrength={6} pulseSpeed={0.6} visibleEdgeColor={0xd9b45a} hiddenEdgeColor={0x8a6c24} width={900} /> : <></>}
-      <SMAA />
+      {T.bloom ? <Bloom mipmapBlur intensity={lighting === 'night' ? 0.45 : 0.16} luminanceThreshold={0.92} luminanceSmoothing={0.2} radius={0.6} /> : <></>}
+      {ultra && view === 'global' ? <DepthOfField worldFocusDistance={3.4} worldFocusRange={2.6} bokehScale={1.6} /> : <></>}
+      {ultra ? <></> : <SMAA />}
       <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
-      <Vignette eskil={false} offset={0.2} darkness={0.55} />
+      <HueSaturation saturation={0.04} />
+      <BrightnessContrast contrast={0.05} />
+      <Vignette eskil={false} offset={0.2} darkness={0.5} />
     </EffectComposer>
   )
 }

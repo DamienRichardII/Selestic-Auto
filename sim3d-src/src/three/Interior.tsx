@@ -8,6 +8,7 @@ import type { ZoneId } from '../data/zones'
 import { COLOR_BY_ID } from '../data/colors'
 import { ZONE_BY_ID } from '../data/zones'
 import { fixedMat, materialsFor, buildMaterial } from './materials'
+import { buildSeat, type SeatSculpt } from './seatGeo'
 import { arcStitches, doorCardGeo, headlinerGeo, lineStitches, rbox, ribbon, scaleUV, tube, boxUV } from './geo'
 
 const V = (x: number, y: number, z: number) => new THREE.Vector3(x, y, z)
@@ -59,47 +60,28 @@ function Stitches({ matrices, material, size = [0.0042, 0.0016, 0.0075] }: { mat
   )
 }
 
-interface SeatProps { x: number; z: number; mats: ReturnType<typeof materialsFor>; seg: number; stitchMat: THREE.Material; pipeMat: THREE.Material; tex: number; rear?: boolean }
+interface SeatProps { x: number; z: number; mats: ReturnType<typeof materialsFor>; sculpt: SeatSculpt; stitchMat: THREE.Material; pipeMat: THREE.Material; skirt: THREE.BufferGeometry; tex: number; rear?: boolean }
 
-function Seat({ x, z, mats, seg, stitchMat, pipeMat, tex, rear }: SeatProps) {
-  const g = useMemo(() => {
-    const cushionC = rbox(0.3, 0.1, 0.5, seg, 0.03)
-    const cushionS = rbox(0.085, 0.125, 0.47, seg, 0.03)
-    const backC = rbox(0.3, 0.58, 0.085, seg, 0.03)
-    const backS = rbox(0.07, 0.42, 0.1, seg, 0.032)
-    const head = rbox(0.2, 0.15, 0.08, seg, 0.03)
-    const skirt = rbox(0.46, 0.17, 0.46, seg, 0.03)
-    const pipeC = [tube(V(-0.153, 0.385, -0.235), V(-0.153, 0.385, 0.235), 0.0045), tube(V(0.153, 0.385, -0.235), V(0.153, 0.385, 0.235), 0.0045)]
-    const pipeB = [tube(V(-0.153, 0.01, -0.052), V(-0.153, 0.57, -0.052), 0.0045), tube(V(0.153, 0.01, -0.052), V(0.153, 0.57, -0.052), 0.0045)]
-    const post = new THREE.CylinderGeometry(0.008, 0.008, 0.1, 10)
-    const stitchTop: THREE.Matrix4[] = []
-    for (const sx of [-1, 1]) for (const off of [-0.014, 0.014]) stitchTop.push(...lineStitches(V(sx * 0.153 + off, 0.3855, -0.225), V(sx * 0.153 + off, 0.3855, 0.225)))
-    const stitchBack: THREE.Matrix4[] = []
-    for (const sx of [-1, 1]) for (const off of [-0.014, 0.014]) stitchBack.push(...lineStitches(V(sx * 0.153 + off, 0.02, -0.0525), V(sx * 0.153 + off, 0.56, -0.0525)).map((m) => m.clone().multiply(new THREE.Matrix4().makeRotationX(Math.PI / 2))))
-    const stitchHead = lineStitches(V(-0.07, 0, -0.0455), V(0.07, 0, -0.0455), 0.011)
-    return { cushionC, cushionS, backC, backS, head, skirt, pipeC, pipeB, post, stitchTop, stitchBack, stitchHead }
-  }, [seg])
+function Seat({ x, z, mats, sculpt: g, stitchMat, pipeMat, skirt, tex, rear }: SeatProps) {
+  const post = useMemo(() => new THREE.CylinderGeometry(0.008, 0.008, 0.1, 10), [])
   const tilt = rear ? 0.26 : 0.2
   return (
     <group position={[x, 0, z]}>
-      <Fixed geometry={g.skirt} material={fixedMat('plasticSoft', tex)} position={[0, 0.17, 0.02]} />
-      <Z zone="seat_cushion" geometry={g.cushionC} material={mats.seat_cushion} position={[0, 0.335, 0]} />
-      <Z zone="seat_bolster" geometry={g.cushionS} material={mats.seat_bolster} position={[-0.19, 0.345, 0]} rotation={[0, 0, 0.1]} />
-      <Z zone="seat_bolster" geometry={g.cushionS} material={mats.seat_bolster} position={[0.19, 0.345, 0]} rotation={[0, 0, -0.1]} />
-      {g.pipeC.map((p, i) => <Z key={'pc' + i} zone="piping" geometry={p} material={pipeMat} position={[0, 0, 0]} />)}
-      <Stitches matrices={g.stitchTop} material={stitchMat} />
+      <Fixed geometry={skirt} material={fixedMat('plasticSoft', tex)} position={[0, 0.17, 0.02]} />
+      <Z zone="seat_cushion" geometry={g.cushion.centre} material={mats.seat_cushion} />
+      <Z zone="seat_bolster" geometry={g.cushion.side} material={mats.seat_bolster} />
+      {g.cushion.pipes.map((p, i) => <Z key={'pc' + i} zone="piping" geometry={p} material={pipeMat} />)}
+      <Stitches matrices={g.cushion.stitches} material={stitchMat} size={[0.0036, 0.0015, 0.0066]} />
       <group position={[0, 0.43, 0.25]} rotation={[tilt, 0, 0]}>
-        <group position={[0, 0, 0]}>
-          <Z zone="seat_back" geometry={g.backC} material={mats.seat_back} position={[0, 0.29, 0]} />
-          <Z zone="seat_bolster" geometry={g.backS} material={mats.seat_bolster} position={[-0.188, 0.23, 0.0]} rotation={[0, 0.08, 0]} />
-          <Z zone="seat_bolster" geometry={g.backS} material={mats.seat_bolster} position={[0.188, 0.23, 0.0]} rotation={[0, -0.08, 0]} />
-          {g.pipeB.map((p, i) => <Z key={'pb' + i} zone="piping" geometry={p} material={pipeMat} position={[0, 0, 0]} />)}
-          <Stitches matrices={g.stitchBack} material={stitchMat} />
-          <Fixed geometry={g.post} material={fixedMat('chrome', tex)} position={[-0.055, 0.65, 0.01]} />
-          <Fixed geometry={g.post} material={fixedMat('chrome', tex)} position={[0.055, 0.65, 0.01]} />
-          <Z zone="seat_headrest" geometry={g.head} material={mats.seat_headrest} position={[0, 0.74, 0.01]} />
-          <Stitches matrices={g.stitchHead.map((m) => m.clone().setPosition(new THREE.Vector3().setFromMatrixPosition(m).add(V(0, 0.74, 0))))} material={stitchMat} />
-        </group>
+        <Z zone="seat_back" geometry={g.back.centre} material={mats.seat_back} />
+        <Z zone="seat_bolster" geometry={g.back.side} material={mats.seat_bolster} />
+        <Fixed geometry={g.back.rear} material={fixedMat('plasticSoft', tex)} />
+        {g.back.pipes.map((p, i) => <Z key={'pb' + i} zone="piping" geometry={p} material={pipeMat} />)}
+        <Stitches matrices={g.back.stitches} material={stitchMat} size={[0.0036, 0.0015, 0.0066]} />
+        <Fixed geometry={post} material={fixedMat('chrome', tex)} position={[-0.055, 0.65, 0.01]} />
+        <Fixed geometry={post} material={fixedMat('chrome', tex)} position={[0.055, 0.65, 0.01]} />
+        <Z zone="seat_headrest" geometry={g.head.geo} material={mats.seat_headrest} />
+        <Stitches matrices={g.head.stitches} material={stitchMat} size={[0.0034, 0.0014, 0.006]} />
       </group>
     </group>
   )
@@ -162,6 +144,7 @@ export function Interior() {
   const pipeMat = mats.piping
   const doorMat = useMemo(() => { const m = mats.door_panels.clone(); m.side = THREE.DoubleSide; return m }, [mats.door_panels])
   const seg = T.segments
+  const sculpt = useMemo(() => buildSeat(config.seat_cushion.pattern, config.seat_back.pattern, config.seat_headrest.pattern, T.seatGrid, T.detail), [config.seat_cushion.pattern, config.seat_back.pattern, config.seat_headrest.pattern, T.seatGrid, T.detail])
 
   const geoms = useMemo(() => {
     const head = headlinerGeo(0.74, 1.2, -0.66, 1.5)
@@ -181,13 +164,14 @@ export function Interior() {
     const screen = rbox(0.34, 0.2, 0.025, 3, 0.008)
     const console_ = rbox(0.22, 0.24, 0.9, seg, 0.04)
     const consoleTop = rbox(0.2, 0.05, 0.4, seg, 0.02)
+    const skirt = rbox(0.46, 0.17, 0.46, seg, 0.03)
     const sill = rbox(0.06, 0.1, 2.9, 3, 0.02)
     const floor = boxUV(new THREE.PlaneGeometry(1.5, 3.2, 1, 1).rotateX(-Math.PI / 2))
     const stitchDoor: THREE.Matrix4[] = [
       ...lineStitches(V(-0.43, 0.16, 0.012), V(0.43, 0.16, 0.012)),
       ...lineStitches(V(-0.43, 0.145, 0.012), V(0.43, 0.145, 0.012)),
     ]
-    return { head, doorF, doorR, arm, armR, insertF, insertR, pillarA, pillarB, pillarC, dash, dashTop, dashInsert, cluster, screen, console_, consoleTop, sill, floor, stitchDoor }
+    return { head, doorF, doorR, arm, armR, insertF, insertR, pillarA, pillarB, pillarC, dash, dashTop, dashInsert, cluster, screen, console_, consoleTop, skirt, sill, floor, stitchDoor }
   }, [seg])
 
   // cadran instrumentation (canvas) – décor neutre, sans logo
@@ -240,10 +224,10 @@ export function Interior() {
       <mesh position={[0, 0.12, -0.3]} material={ambMat}><boxGeometry args={[0.2, 0.01, 0.4]} /></mesh>
 
       {/* sièges */}
-      <Seat x={-0.38} z={0.02} mats={mats} seg={seg} stitchMat={stitchMat} pipeMat={pipeMat} tex={tex} />
-      <Seat x={0.38} z={0.02} mats={mats} seg={seg} stitchMat={stitchMat} pipeMat={pipeMat} tex={tex} />
-      <Seat x={-0.36} z={0.92} mats={mats} seg={seg} stitchMat={stitchMat} pipeMat={pipeMat} tex={tex} rear />
-      <Seat x={0.36} z={0.92} mats={mats} seg={seg} stitchMat={stitchMat} pipeMat={pipeMat} tex={tex} rear />
+      <Seat x={-0.38} z={0.02} mats={mats} sculpt={sculpt} skirt={geoms.skirt} stitchMat={stitchMat} pipeMat={pipeMat} tex={tex} />
+      <Seat x={0.38} z={0.02} mats={mats} sculpt={sculpt} skirt={geoms.skirt} stitchMat={stitchMat} pipeMat={pipeMat} tex={tex} />
+      <Seat x={-0.36} z={0.92} mats={mats} sculpt={sculpt} skirt={geoms.skirt} stitchMat={stitchMat} pipeMat={pipeMat} tex={tex} rear />
+      <Seat x={0.36} z={0.92} mats={mats} sculpt={sculpt} skirt={geoms.skirt} stitchMat={stitchMat} pipeMat={pipeMat} tex={tex} rear />
 
       <Wheel mats={mats} seg={seg} stitchMat={stitchMat} tex={tex} />
 

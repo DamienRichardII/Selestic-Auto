@@ -110,3 +110,7 @@ Compression conseillée avant mise en ligne : `npx @gltf-transform/cli meshopt i
 * TypeScript strict : OK. Build Vite : OK (≈ 600 Ko compressés, chargés uniquement sur la page Simulateur).
 * Navigateur Chromium (rendu logiciel) : chargement, 4 vues, vues par zone, 3 éclairages, 3 niveaux de qualité, changement de matière/teinte/motif, application à plusieurs zones, réinitialisation, récapitulatif, transmission au devis (identifiant de projet), repli photo sans WebGL, chargement d'un GLB externe (aller-retour), mobile 390 px.
 * **À faire sur appareils réels** : fluidité (images/s) sur ordinateur et mobiles de gamme moyenne, Safari iOS, réseaux lents.
+
+## 10. Mise à niveau photoréalisme (branche `feature/photorealisme`)
+
+Voir `AUDIT-PHOTOREALISME.md` à la racine : textures scannées, sièges sculptés (`src/three/seatGeo.ts`), HDRI, bloom/étalonnage/DoF, profils Mobile / Équilibré / Ultra. Les textures (`public/tex`) se régénèrent avec `python3 scripts/build-textures.py --src <dossier ambientCG> --out public/tex` ; les HDRI sont dans `public/hdri`. `npm run build:site` copie le tout dans `sim3d/`.

@@ -1,15 +1,15 @@
 import { r as e } from "./rolldown-runtime-Y_bBpyJl.js";
-import { b as t, v as n } from "./r3f-C1LUL5py.js";
-import { Bt as r, T as i, Vt as a } from "./post-CUbYs-ZN.js";
+import { S as t, w as n } from "./r3f-C40kzI9o.js";
+import { A as r, Gt as i, Kt as a } from "./post-OfUYQ3IA.js";
 //#region node_modules/zustand/esm/react.mjs
-var o = /* @__PURE__ */ e(t(), 1), s = (e) => e;
+var o = /* @__PURE__ */ e(n(), 1), s = (e) => e;
 function c(e, t = s) {
 	let n = o.useSyncExternalStore(e.subscribe, o.useCallback(() => t(e.getState()), [e, t]), o.useCallback(() => t(e.getInitialState()), [e, t]));
 	return o.useDebugValue(n), n;
 }
 var l = (e) => {
-	let t = n(e), r = (e) => c(t, e);
-	return Object.assign(r, t), r;
+	let n = t(e), r = (e) => c(n, e);
+	return Object.assign(r, n), r;
 }, u = ((e) => e ? l(e) : l), d = [
 	"leather_smooth",
 	"leather_perforated",
@@ -374,7 +374,10 @@ var S = {
 		post: !1,
 		outline: !1,
 		envRes: 128,
-		segments: 3
+		segments: 3,
+		seatGrid: .016,
+		detail: !1,
+		bloom: !1
 	},
 	medium: {
 		dpr: [1, 1.5],
@@ -385,7 +388,10 @@ var S = {
 		post: !0,
 		outline: !0,
 		envRes: 256,
-		segments: 5
+		segments: 5,
+		seatGrid: .0095,
+		detail: !0,
+		bloom: !0
 	},
 	high: {
 		dpr: [1, 2],
@@ -396,7 +402,10 @@ var S = {
 		post: !0,
 		outline: !0,
 		envRes: 512,
-		segments: 8
+		segments: 8,
+		seatGrid: .006,
+		detail: !0,
+		bloom: !0
 	}
 }, C = (e, t, n = "plain") => ({
 	material: e,
@@ -719,10 +728,10 @@ function K(e, t) {
 }
 var q = /* @__PURE__ */ new Map();
 function J(e, t) {
-	return e.wrapS = e.wrapT = r, e.colorSpace = t ? a : "", e.anisotropy = 8, e.needsUpdate = !0, e;
+	return e.wrapS = e.wrapT = i, e.colorSpace = t ? a : "", e.anisotropy = 8, e.needsUpdate = !0, e;
 }
 function Y(e, t, n) {
-	let r = t === "plain" ? 5 : 11, a = `${e}|${t}|${n}`, o = q.get(a);
+	let i = t === "plain" ? 5 : 11, a = `${e}|${t}|${n}`, o = q.get(a);
 	if (o) return o;
 	let s = G(e, t, n);
 	if (!s) return null;
@@ -732,12 +741,12 @@ function Y(e, t, n) {
 	}), l = K(n, (e, t) => {
 		t[e * 4] = 255, t[e * 4 + 1] = Math.max(0, Math.min(255, s.r[e] * 255)), t[e * 4 + 2] = 0, t[e * 4 + 3] = 255;
 	}), u = K(n, (e, t) => {
-		let i = e % n, a = e / n | 0, o = s.h[a * n + (i + 1) % n] - s.h[a * n + (i - 1 + n) % n], c = s.h[(a + 1) % n * n + i] - s.h[(a - 1 + n) % n * n + i], l = r, u = -o * l, d = c * l, f = 1, p = Math.hypot(u, d, f);
+		let r = e % n, a = e / n | 0, o = s.h[a * n + (r + 1) % n] - s.h[a * n + (r - 1 + n) % n], c = s.h[(a + 1) % n * n + r] - s.h[(a - 1 + n) % n * n + r], l = i, u = -o * l, d = c * l, f = 1, p = Math.hypot(u, d, f);
 		u /= p, d /= p, f /= p, t[e * 4] = (u * .5 + .5) * 255, t[e * 4 + 1] = (d * .5 + .5) * 255, t[e * 4 + 2] = (f * .5 + .5) * 255, t[e * 4 + 3] = 255;
 	}), d = {
-		map: J(new i(c), !0),
-		normal: J(new i(u), !1),
-		rough: J(new i(l), !1),
+		map: J(new r(c), !0),
+		normal: J(new r(u), !1),
+		rough: J(new r(l), !1),
 		tile: s.tile,
 		ns: s.ns,
 		albedo: c

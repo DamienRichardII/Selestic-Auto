@@ -49,10 +49,14 @@ export interface TierSettings {
   outline: boolean
   envRes: number
   segments: number
+  /** pas de maillage des sièges sculptés (m) et surpiqûres détaillées */
+  seatGrid: number
+  detail: boolean
+  bloom: boolean
 }
 
 export const TIERS: Record<Tier, TierSettings> = {
-  low: { dpr: [1, 1.25], texSize: 256, shadows: false, shadowMap: 512, ao: false, post: false, outline: false, envRes: 128, segments: 3 },
-  medium: { dpr: [1, 1.5], texSize: 512, shadows: true, shadowMap: 1024, ao: false, post: true, outline: true, envRes: 256, segments: 5 },
-  high: { dpr: [1, 2], texSize: 1024, shadows: true, shadowMap: 2048, ao: true, post: true, outline: true, envRes: 512, segments: 8 },
+  low: { dpr: [1, 1.25], texSize: 256, shadows: false, shadowMap: 512, ao: false, post: false, outline: false, envRes: 128, segments: 3, seatGrid: 0.016, detail: false, bloom: false },
+  medium: { dpr: [1, 1.5], texSize: 512, shadows: true, shadowMap: 1024, ao: false, post: true, outline: true, envRes: 256, segments: 5, seatGrid: 0.0095, detail: true, bloom: true },
+  high: { dpr: [1, 2], texSize: 1024, shadows: true, shadowMap: 2048, ao: true, post: true, outline: true, envRes: 512, segments: 8, seatGrid: 0.006, detail: true, bloom: true },
 }
