@@ -250,7 +250,15 @@
   if (fd) {
     fillSelects(fd);
     var sm = qs.get("sim");
-    if (sm) { try { var sd = JSON.parse(sm), dsc = $('[name="description"]', fd); dsc.value = "Configuration du simulateur Selestic :\n" + sd.map(function (l) { return "- " + l; }).join("\n") + "\n"; } catch (e) {} }
+    if (sm) {
+      try {
+        // accepte l’ancien format (liste de lignes) et celui du simulateur 3D { id, lines }
+        var sd = JSON.parse(sm), dsc = $('[name="description"]', fd), sid = "", sl = sd;
+        if (sd && !Array.isArray(sd)) { sid = String(sd.id || "").replace(/[^\w-]/g, "").slice(0, 24); sl = sd.lines || []; }
+        sl = sl.slice(0, 30).map(function (l) { return String(l).slice(0, 160); });
+        dsc.value = (sid ? "Simulateur 3D Selestic — projet " + sid + "\n" : "Configuration du simulateur Selestic :\n") + sl.map(function (l) { return "- " + l; }).join("\n") + "\n";
+      } catch (e) {}
+    }
     var st = qs.get("stock"); if (st) $('[name="description"]', fd).value = "Produit en stock concerné : " + st + "\n";
     fd.addEventListener("submit", function (e) { e.preventDefault(); send(fd, "Demande de devis — Selestic Auto", $("#msg-devis")); });
   }
@@ -271,41 +279,65 @@
   }
 
   /* ---------- Simulateur visuel (photos recolorées) ---------- */
+  function initPhotoSim() {
   var sv = $("#sim");
-  if (sv) {
-    var SM = D.simulateur, state = {}, cur = "sieges", ph = $("#sim-photo");
-    SM.zones.forEach(function (z) { state[z.id] = { c: 0, m: z.matieres[0] || "" }; });
+  if (!sv || sv.dataset.ready) return;
+  sv.dataset.ready = "1";
+  {
+    var SM = D.simulateur, state = {}, cur = "sieges", ph = $("#sim-photo"), cmp = $("#sim-cmp"), scNow = 1;
+    var MAT = { Cuir: { hl: 1, bl: "1px", g: "leather", go: .3, gs: "170px" }, Alcantara: { hl: .22, bl: ".6px", g: "suede", go: .4, gs: "128px" }, Tissu: { hl: .5, bl: "0px", g: "", go: 0, gs: "128px" } };
+    var ZN = {}; SM.zones.forEach(function (z) { ZN[z.id] = z; state[z.id] = { c: 0, m: z.matieres[0] || "" }; });
     ph.innerHTML = Object.keys(SM.scenes).map(function (k) {
       var sc = SM.scenes[k];
-      return '<div class="sc sc' + k + '"><img src="' + sc.img + '" alt="" width="1280" height="720">' + sc.zones.map(function (z) { return '<div class="pl pc m-' + z + '" data-lz="' + z + '" style="background-image:url(' + sc.flat + ')"></div><div class="pl pt m-' + z + '" data-lt="' + z + '"></div>'; }).join("") + "</div>";
-    }).join("");
-    var tabs = $("#sim-tabs"), sw = $("#sim-sw"), mats = $("#sim-mats"), rec = $("#sim-rec"), matBox = $("#sim-matbox");
+      return '<div class="sc sc' + k + '"><img src="' + sc.img + '" alt="" width="1600" height="900"' + (k === "1" ? "" : ' loading="lazy"') + ">" + sc.zones.map(function (z) {
+        return '<div class="pl pc s' + k + " m-" + z + '" data-lz="' + z + '" style="background-image:url(' + sc.shade + ')" hidden></div><div class="pl ph s' + k + " m-" + z + '" data-lh="' + z + '" style="background-image:url(' + sc.hl + ')" hidden></div><div class="pl pt s' + k + " m-" + z + '" data-lt="' + z + '" hidden></div>';
+      }).join("") + Object.keys(sc.hot).map(function (z) { return '<button type="button" class="hot' + (sc.hot[z][0] < 18 ? " l" : sc.hot[z][0] > 82 ? " r" : "") + '" data-hz="' + z + '" style="left:' + sc.hot[z][0] + "%;top:" + sc.hot[z][1] + '%" aria-label="' + esc(ZN[z].nom) + '"><i></i><span>' + esc(ZN[z].nom) + "</span></button>"; }).join("") + "</div>";
+    }).join("") + '<div class="cmp-o" aria-hidden="true"></div>';
+    var cmpO = $(".cmp-o", ph);
+    var tabs = $("#sim-tabs"), sw = $("#sim-sw"), mats = $("#sim-mats"), rec = $("#sim-rec"), matBox = $("#sim-matbox"), cap = $("#sim-cap"), views = $("#sim-views");
+    views.innerHTML = Object.keys(SM.scenes).map(function (k) { return '<button type="button" class="vdot" data-v="' + k + '" aria-label="Vue ' + k + '"></button>'; }).join("");
+    function setCmp() { cmpO.style.clipPath = "inset(0 " + (100 - cmp.value) + "% 0 0)"; ph.style.setProperty("--cx", cmp.value + "%"); }
     function paint() {
       SM.zones.forEach(function (z) {
-        var st = state[z.id], col = SM.couleurs[st.c][1];
-        $$('[data-lz="' + z.id + '"]', ph).forEach(function (e) { e.style.setProperty("--zc", col || "transparent"); e.hidden = !col; });
-        $$('[data-lt="' + z.id + '"]', ph).forEach(function (e) { e.dataset.mat = st.m; e.hidden = !col; });
+        var st = state[z.id], col = SM.couleurs[st.c][1], mt = MAT[st.m] || MAT.Tissu, off = !col;
+        $$('[data-lz="' + z.id + '"]', ph).forEach(function (e) { e.style.setProperty("--zc", col || "transparent"); e.style.setProperty("--bl", mt.bl); e.hidden = off; });
+        $$('[data-lh="' + z.id + '"]', ph).forEach(function (e) { e.style.opacity = mt.hl; e.hidden = off; });
+        $$('[data-lt="' + z.id + '"]', ph).forEach(function (e) { e.hidden = off || !mt.g; e.style.backgroundImage = mt.g ? "url(media/simulateur/" + mt.g + ".png)" : "none"; e.style.backgroundSize = mt.gs; e.style.opacity = mt.go; });
       });
       var lines = SM.zones.map(function (z) { var st = state[z.id]; return z.nom + " : " + (st.c === 0 ? "d’origine" : (st.m ? st.m + ", " : "") + SM.couleurs[st.c][0]); });
-      rec.innerHTML = lines.map(function (l) { return "<li>" + esc(l) + "</li>"; }).join("");
+      rec.innerHTML = SM.zones.map(function (z, i) { var st = state[z.id], c = SM.couleurs[st.c]; return '<li><span class="dot' + (c[1] ? "" : " o") + '" style="--c:' + (c[1] || "transparent") + '"></span><b>' + esc(z.nom) + "</b><em>" + esc(st.c === 0 ? "D’origine" : (st.m ? st.m + " · " : "") + c[0]) + "</em></li>"; }).join("");
       $("#sim-devis").href = "devis.html?sim=" + encodeURIComponent(JSON.stringify(lines));
     }
     function ui() {
-      var z = SM.zones.filter(function (x) { return x.id === cur; })[0], st = state[cur];
-      tabs.innerHTML = SM.zones.map(function (x) { return '<button type="button" class="chip' + (x.id === cur ? " on" : "") + '" data-z="' + x.id + '">' + esc(x.nom) + "</button>"; }).join("");
-      sw.innerHTML = SM.couleurs.map(function (c, i) { return '<button type="button" class="sw' + (i === st.c ? " on" : "") + '" data-c="' + i + '" style="--c:' + (c[1] || "transparent") + '"' + (c[1] ? "" : ' data-o="1"') + ' aria-label="' + esc(c[0]) + '" title="' + esc(c[0]) + '"></button>'; }).join("");
-      $("#sim-cname").textContent = SM.couleurs[st.c][0];
+      var z = ZN[cur], st = state[cur], c = SM.couleurs[st.c];
+      tabs.innerHTML = SM.zones.map(function (x) { var cc = SM.couleurs[state[x.id].c]; return '<button type="button" class="chip' + (x.id === cur ? " on" : "") + '" data-z="' + x.id + '"><span class="dot' + (cc[1] ? "" : " o") + '" style="--c:' + (cc[1] || "transparent") + '"></span>' + esc(x.nom) + "</button>"; }).join("");
+      sw.innerHTML = SM.couleurs.map(function (cc, i) { return '<button type="button" class="sw' + (i === st.c ? " on" : "") + '" data-c="' + i + '" style="--c:' + (cc[1] || "transparent") + '"' + (cc[1] ? "" : ' data-o="1"') + ' aria-label="' + esc(cc[0]) + '" title="' + esc(cc[0]) + '"></button>'; }).join("");
+      $("#sim-cname").textContent = "· " + c[0];
       matBox.style.display = z.matieres.length && st.c !== 0 ? "" : "none";
       mats.innerHTML = z.matieres.map(function (m) { return '<button type="button" class="chip' + (m === st.m ? " on" : "") + '" data-m="' + m + '">' + esc(m) + "</button>"; }).join("");
-      ph.dataset.sc = z.scene;
+      cap.innerHTML = "<b>" + esc(z.nom) + "</b> — " + (st.c === 0 ? "d’origine" : esc((st.m ? st.m + ", " : "") + c[0]));
+      if (!SM.scenes[scNow].zones.includes(cur)) scNow = z.scene;
+      ph.dataset.sc = scNow;
+      $$(".vdot", views).forEach(function (v) { v.classList.toggle("on", +v.dataset.v === scNow); });
+      $$(".hot", ph).forEach(function (hb) { hb.classList.toggle("on", hb.dataset.hz === cur); });
     }
-    tabs.addEventListener("click", function (e) { var b = e.target.closest("[data-z]"); if (b) { cur = b.dataset.z; ui(); } });
+    function go(z) { cur = z; if (!SM.scenes[scNow].zones.includes(z)) scNow = ZN[z].scene; ui(); }
+    tabs.addEventListener("click", function (e) { var b = e.target.closest("[data-z]"); if (b) go(b.dataset.z); });
+    ph.addEventListener("click", function (e) { var b = e.target.closest("[data-hz]"); if (b) go(b.dataset.hz); });
+    views.addEventListener("click", function (e) { var b = e.target.closest("[data-v]"); if (b) { scNow = +b.dataset.v; if (!SM.scenes[scNow].zones.includes(cur)) cur = SM.scenes[scNow].zones[0]; ui(); } });
     sw.addEventListener("click", function (e) { var b = e.target.closest("[data-c]"); if (b) { state[cur].c = +b.dataset.c; ui(); paint(); } });
     mats.addEventListener("click", function (e) { var b = e.target.closest("[data-m]"); if (b) { state[cur].m = b.dataset.m; ui(); paint(); } });
     $("#sim-all").addEventListener("click", function () { var c = state[cur].c; SM.zones.forEach(function (z) { state[z.id].c = c; }); ui(); paint(); });
     $("#sim-reset").addEventListener("click", function () { SM.zones.forEach(function (z) { state[z.id] = { c: 0, m: z.matieres[0] || "" }; }); ui(); paint(); });
+    var cb = $("#sim-compare");
+    cb.addEventListener("click", function () { var on = cb.getAttribute("aria-pressed") !== "true"; cb.setAttribute("aria-pressed", on); cmp.hidden = !on; ph.classList.toggle("cmp-on", on); if (on) { cmp.value = 50; setCmp(); cmpO.style.backgroundImage = "url(" + SM.scenes[scNow].img + ")"; } });
+    cmp.addEventListener("input", function () { cmpO.style.backgroundImage = "url(" + SM.scenes[scNow].img + ")"; setCmp(); });
     ui(); paint();
   }
+  }
+  // Version photo : lancée seule si la page n'embarque pas le simulateur 3D ; sinon elle sert de solution de repli.
+  window.SelesticPhotoSim = initPhotoSim;
+  if (!$("#sim3d-root")) initPhotoSim();
 
   reveal();
 })();

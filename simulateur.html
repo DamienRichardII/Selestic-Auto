@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Simulateur — Selestic Auto</title>
-<meta name="description" content="Simulez les couleurs et matières de votre intérieur avec Selestic Auto : sièges, volant, ceintures, ciel de toit, portes et coutures.">
+<meta name="description" content="Personnalisez votre intérieur en 3D avec Selestic Auto : matières, couleurs, coutures et motifs pour sièges, volant, ceintures, ciel de toit et portes.">
 <meta name="theme-color" content="#0a0c0b">
 <link rel="icon" type="image/png" href="assets/img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,26 +12,39 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/sim-masks.css">
+<style>.s3d-boot{display:grid;place-items:center;gap:14px;min-height:320px;border:1px solid var(--line);border-radius:22px;background:#050606;color:var(--gold-l);text-align:center;padding:24px}.sim3d-switch{margin-top:14px;text-align:center}.sim3d-switch button{background:none;border:0;color:var(--mut);text-decoration:underline;cursor:pointer;font-size:.84rem}[hidden]{display:none!important}</style>
 </head>
 <body data-page="simulateur">
 <header id="header"></header>
 <main>
 <section class="page-hero"><img class="snake" src="assets/img/snake-left.png" alt="" aria-hidden="true"><div class="wrap"><span class="eyebrow">Simulateur</span><h1>Imaginez votre <span class='accent'>intérieur</span></h1></div></section>
-<section style="padding-top:20px"><div class="wrap">
-<div class="sim" id="sim">
-<div class="sim-view"><div class="sim-photo" id="sim-photo" data-sc="1" role="img" aria-label="Aperçu photo de l’habitacle à personnaliser"></div>
-<p class="sim-note">Aperçu illustratif : les teintes et matières réelles sont confirmées par Selestic lors du devis.</p></div>
+<section class="sim-sec"><div class="wrap sim-wrap">
+<div id="sim3d-root" aria-live="polite"><div class="s3d-boot" role="status">Chargement du simulateur 3D…</div></div>
+<p class="sim-note" id="sim3d-note" hidden>La 3D n’est pas disponible sur cet appareil : voici la version photo du simulateur.</p>
+<div class="sim" id="sim" hidden>
+<div class="sim-view">
+<div class="sim-stage">
+<div class="sim-photo" id="sim-photo" data-sc="1" role="img" aria-label="Aperçu photo de l’habitacle à personnaliser"></div>
+<input type="range" class="sim-cmp" id="sim-cmp" min="0" max="100" value="50" aria-label="Comparer avec l’original" hidden>
+<div class="sim-bar"><button type="button" class="sim-tool" id="sim-compare" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M12 3v18M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>Comparer avec l’original</button><div class="sim-views" id="sim-views" role="group" aria-label="Changer de vue"></div></div>
+</div>
+<p class="sim-caption" id="sim-cap"></p>
+<p class="sim-note">Aperçu illustratif sur véhicule d’exemple : les teintes et matières réelles sont confirmées par Selestic lors du devis.</p>
+</div>
 <div class="sim-panel">
-<h2>1. Choisissez une zone</h2><div class="filters" id="sim-tabs"></div>
-<div id="sim-matbox"><h2>2. Matière</h2><div class="filters" id="sim-mats"></div></div>
-<h2>3. Couleur : <span id="sim-cname" class="accent"></span></h2><div class="sw-grid" id="sim-sw"></div>
-<div class="sim-actions"><button type="button" class="chip" id="sim-all">Appliquer cette couleur partout</button><button type="button" class="chip" id="sim-reset">Réinitialiser</button></div>
+<div class="sim-step"><h2><b>01</b>Zone à personnaliser</h2><div class="filters" id="sim-tabs"></div></div>
+<div class="sim-step" id="sim-matbox"><h2><b>02</b>Matière</h2><div class="filters" id="sim-mats"></div></div>
+<div class="sim-step"><h2><b>03</b>Teinte <span id="sim-cname" class="accent"></span></h2><div class="sw-grid" id="sim-sw"></div>
+<div class="sim-actions"><button type="button" class="chip" id="sim-all">Appliquer cette teinte partout</button><button type="button" class="chip" id="sim-reset">Tout réinitialiser</button></div></div>
 <div class="sim-rec"><h3>Votre configuration</h3><ul id="sim-rec"></ul></div>
-<a class="btn btn-primary" id="sim-devis" href="devis.html">Demander un devis avec cette configuration</a>
-</div></div></div></section>
+<a class="btn btn-primary sim-go" id="sim-devis" href="devis.html">Demander un devis avec cette configuration</a>
+</div></div></div>
+<p class="sim3d-switch"><button type="button" id="sim3d-switch">Passer à la version photo (appareil moins puissant)</button></p>
+</div></section>
 </main>
 <footer id="footer"></footer>
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
+<script src="js/sim3d-loader.js"></script>
 </body>
 </html>

@@ -1,0 +1,10 @@
+{
+  "headers": [
+    { "source": "/sim3d/chunks/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] },
+    { "source": "/sim3d/(sim3d.js|sim3d.css)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }] }
+  ],
+  "redirects": [
+    { "source": "/sim3d-src/:path*", "destination": "/simulateur.html", "permanent": false },
+    { "source": "/AUDIT-SIMULATEUR-3D.md", "destination": "/simulateur.html", "permanent": false }
+  ]
+}

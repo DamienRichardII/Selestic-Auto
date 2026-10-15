@@ -114,7 +114,10 @@ window.SELESTIC = {
 
   /* Simulateur visuel (nuancier indicatif, la teinte définitive est confirmée par Selestic) */
   simulateur: {
-    scenes: { 1: { img: "media/simulateur/scene1.jpg", flat: "media/simulateur/scene1f.jpg", zones: ["sieges", "ceintures", "portes"] }, 2: { img: "media/simulateur/scene2.jpg", flat: "media/simulateur/scene2f.jpg", zones: ["ciel", "volant", "portes", "ceintures"] } },
+    scenes: {
+      1: { img: "media/simulateur/scene1.jpg", shade: "media/simulateur/scene1s.jpg", hl: "media/simulateur/scene1h.jpg", zones: ["sieges", "ceintures", "portes"], hot: {"sieges": [36, 50], "ceintures": [68, 38], "portes": [9, 58]} },
+      2: { img: "media/simulateur/scene2.jpg", shade: "media/simulateur/scene2s.jpg", hl: "media/simulateur/scene2h.jpg", zones: ["ciel", "volant", "portes", "ceintures"], hot: {"ciel": [22, 9], "volant": [60, 57], "portes": [46, 60], "ceintures": [36, 57]} }
+    },
     zones: [
       { id: "sieges", nom: "Sièges", scene: 1, matieres: ["Tissu", "Cuir", "Alcantara"] },
       { id: "volant", nom: "Volant", scene: 2, matieres: ["Cuir", "Alcantara", "Tissu"] },
