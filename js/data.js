@@ -114,16 +114,16 @@ window.SELESTIC = {
 
   /* Simulateur visuel (nuancier indicatif, la teinte définitive est confirmée par Selestic) */
   simulateur: {
+    scenes: { 1: { img: "media/simulateur/scene1.jpg", flat: "media/simulateur/scene1f.jpg", zones: ["sieges", "ceintures", "portes"] }, 2: { img: "media/simulateur/scene2.jpg", flat: "media/simulateur/scene2f.jpg", zones: ["ciel", "volant", "portes", "ceintures"] } },
     zones: [
-      { id: "sieges", nom: "Sièges", matieres: ["Cuir", "Alcantara", "Tissu"] },
-      { id: "volant", nom: "Volant", matieres: ["Cuir", "Alcantara", "Tissu"] },
-      { id: "ceintures", nom: "Ceintures", matieres: [] },
-      { id: "ciel", nom: "Ciel de toit", matieres: ["Alcantara", "Tissu", "Cuir"] },
-      { id: "portes", nom: "Panneaux de portes", matieres: ["Cuir", "Alcantara", "Tissu"] },
-      { id: "coutures", nom: "Coutures", matieres: [] }
+      { id: "sieges", nom: "Sièges", scene: 1, matieres: ["Tissu", "Cuir", "Alcantara"] },
+      { id: "volant", nom: "Volant", scene: 2, matieres: ["Cuir", "Alcantara", "Tissu"] },
+      { id: "ceintures", nom: "Ceintures", scene: 1, matieres: [] },
+      { id: "ciel", nom: "Ciel de toit", scene: 2, matieres: ["Alcantara", "Tissu", "Cuir"] },
+      { id: "portes", nom: "Panneaux de portes", scene: 1, matieres: ["Cuir", "Alcantara", "Tissu"] }
     ],
     couleurs: [
-      ["Noir", "#16181a"], ["Blanc", "#f0efeb"], ["Gris clair", "#a8acae"], ["Gris foncé", "#4b5052"],
+      ["D’origine", ""], ["Noir", "#16181a"], ["Blanc", "#f0efeb"], ["Gris clair", "#a8acae"], ["Gris foncé", "#4b5052"],
       ["Beige", "#cdb99a"], ["Marron", "#6b4a32"], ["Bordeaux", "#5e1424"], ["Rouge", "#b3202a"],
       ["Orange", "#e0701a"], ["Jaune", "#e8c21a"], ["Vert", "#1f7a4d"], ["Vert olive", "#5c6b3a"],
       ["Bleu", "#1f55b8"], ["Bleu turquoise", "#1fa6b8"], ["Violet", "#6a2fa0"], ["Rose", "#e0407f"]

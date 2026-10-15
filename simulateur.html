@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/sim-masks.css">
 </head>
 <body data-page="simulateur">
 <header id="header"></header>
@@ -18,32 +19,7 @@
 <section class="page-hero"><img class="snake" src="assets/img/snake-left.png" alt="" aria-hidden="true"><div class="wrap"><span class="eyebrow">Simulateur</span><h1>Imaginez votre <span class='accent'>intérieur</span></h1></div></section>
 <section style="padding-top:20px"><div class="wrap">
 <div class="sim" id="sim">
-<div class="sim-view"><div class="sim-photo" id="sim-photo" role="img" aria-label="Aperçu photo de l’habitacle à personnaliser"><img src="media/simulateur/base.jpg" alt="" width="787" height="1000">
-<div class="pl pc" id="p-ciel" data-mat="Alcantara"></div><div class="pl pt" id="p-ciel-t" data-mat="Alcantara"></div>
-<div class="pl pc" id="p-sieges" data-mat="Cuir"></div><div class="pl pt" id="p-sieges-t" data-mat="Cuir"></div></div>
-<svg id="sim-svg" viewBox="0 0 800 480" role="img" aria-label="Aperçu de l’habitacle à personnaliser">
-<defs>
-<linearGradient id="glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b2a30"/><stop offset="1" stop-color="#0d1417"/></linearGradient>
-<linearGradient id="shine" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".28"/></linearGradient>
-<pattern id="t-alc" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="#000" fill-opacity=".16"/><circle cx="1" cy="1" r=".7" fill="#fff" fill-opacity=".08"/><circle cx="3" cy="3" r=".7" fill="#fff" fill-opacity=".08"/></pattern>
-<pattern id="t-tis" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#000" fill-opacity=".08"/><rect width="6" height="1.4" fill="#000" fill-opacity=".28"/><rect y="3" width="6" height="1" fill="#fff" fill-opacity=".1"/></pattern>
-</defs>
-<rect width="800" height="480" fill="#0b0e0d"/>
-<g id="z-ciel" class="zone" data-mat="Alcantara"><path class="base" d="M70 24H730L690 112H110Z"/><path class="tex" d="M70 24H730L690 112H110Z"/><path class="gl" d="M70 24H730L690 112H110Z"/></g>
-<path d="M110 112H690L646 232H154Z" fill="url(#glass)" stroke="#000" stroke-opacity=".6"/>
-<path d="M0 232H800V300H0Z" fill="#101413"/><path d="M0 232H800" stroke="#fff" stroke-opacity=".08"/>
-<g id="z-portes" class="zone" data-mat="Cuir"><path class="base" d="M0 24L70 24L110 112L154 232V470H0Z"/><path class="tex" d="M0 24L70 24L110 112L154 232V470H0Z"/><path class="gl" d="M0 24L70 24L110 112L154 232V470H0Z"/>
-<path class="base" d="M800 24L730 24L690 112L646 232V470H800Z"/><path class="tex" d="M800 24L730 24L690 112L646 232V470H800Z"/><path class="gl" d="M800 24L730 24L690 112L646 232V470H800Z"/>
-<path class="st" d="M24 300H132M24 380H132M776 300H668M776 380H668"/></g>
-<g id="z-volant" class="zone" data-mat="Cuir"><circle class="ring-b" cx="285" cy="262" r="56" fill="none"/><circle class="ring-t" cx="285" cy="262" r="56" fill="none"/><circle class="ring-g" cx="285" cy="262" r="56" fill="none"/>
-<path d="M229 262H341M285 262V318" stroke="#0c0f0e" stroke-width="12" stroke-linecap="round"/><circle cx="285" cy="262" r="15" fill="#0c0f0e" stroke="#2a312e"/>
-<circle class="st-c" cx="285" cy="262" r="56" fill="none" stroke-dasharray="5 6"/></g>
-<g id="z-sieges" class="zone" data-mat="Cuir">
-<g><rect class="base" x="200" y="352" width="170" height="118" rx="22"/><rect class="tex" x="200" y="352" width="170" height="118" rx="22"/><rect class="gl" x="200" y="352" width="170" height="118" rx="22"/><rect class="base" x="248" y="312" width="74" height="52" rx="14"/><rect class="tex" x="248" y="312" width="74" height="52" rx="14"/><path class="st" d="M222 372H348M222 372V454M348 372V454"/></g>
-<g><rect class="base" x="430" y="352" width="170" height="118" rx="22"/><rect class="tex" x="430" y="352" width="170" height="118" rx="22"/><rect class="gl" x="430" y="352" width="170" height="118" rx="22"/><rect class="base" x="478" y="312" width="74" height="52" rx="14"/><rect class="tex" x="478" y="312" width="74" height="52" rx="14"/><path class="st" d="M452 372H578M452 372V454M578 372V454"/></g></g>
-<g id="z-ceintures" class="zone" data-mat="sangle"><path class="belt" d="M226 316L350 470M456 316L580 470"/><rect class="belt-b" x="318" y="440" width="24" height="16" rx="3" fill="#bfc5c8"/><rect x="548" y="440" width="24" height="16" rx="3" fill="#bfc5c8"/></g>
-<g id="z-coutures" class="zone"></g>
-</svg>
+<div class="sim-view"><div class="sim-photo" id="sim-photo" data-sc="1" role="img" aria-label="Aperçu photo de l’habitacle à personnaliser"></div>
 <p class="sim-note">Aperçu illustratif : les teintes et matières réelles sont confirmées par Selestic lors du devis.</p></div>
 <div class="sim-panel">
 <h2>1. Choisissez une zone</h2><div class="filters" id="sim-tabs"></div>

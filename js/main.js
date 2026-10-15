@@ -270,40 +270,38 @@
     });
   }
 
-  /* ---------- Simulateur visuel ---------- */
+  /* ---------- Simulateur visuel (photos recolorées) ---------- */
   var sv = $("#sim");
   if (sv) {
-    var SM = D.simulateur, state = {}, cur = "sieges";
+    var SM = D.simulateur, state = {}, cur = "sieges", ph = $("#sim-photo");
     SM.zones.forEach(function (z) { state[z.id] = { c: 0, m: z.matieres[0] || "" }; });
+    ph.innerHTML = Object.keys(SM.scenes).map(function (k) {
+      var sc = SM.scenes[k];
+      return '<div class="sc sc' + k + '"><img src="' + sc.img + '" alt="" width="1280" height="720">' + sc.zones.map(function (z) { return '<div class="pl pc m-' + z + '" data-lz="' + z + '" style="background-image:url(' + sc.flat + ')"></div><div class="pl pt m-' + z + '" data-lt="' + z + '"></div>'; }).join("") + "</div>";
+    }).join("");
     var tabs = $("#sim-tabs"), sw = $("#sim-sw"), mats = $("#sim-mats"), rec = $("#sim-rec"), matBox = $("#sim-matbox");
-    var hex = function (i) { return SM.couleurs[i][1]; };
     function paint() {
       SM.zones.forEach(function (z) {
-        var st = state[z.id], el = $("#z-" + z.id, sv), col = hex(st.c);
-        if (z.id === "coutures") { sv.style.setProperty("--stitch", col); return; }
-        el.style.setProperty("--zc", col);
-        el.setAttribute("data-mat", st.m || "sangle");
-        var pz = $("#p-" + z.id);
-        if (pz) { pz.style.setProperty("--zc", col); pz.dataset.mat = st.m; $("#p-" + z.id + "-t").dataset.mat = st.m; }
+        var st = state[z.id], col = SM.couleurs[st.c][1];
+        $$('[data-lz="' + z.id + '"]', ph).forEach(function (e) { e.style.setProperty("--zc", col || "transparent"); e.hidden = !col; });
+        $$('[data-lt="' + z.id + '"]', ph).forEach(function (e) { e.dataset.mat = st.m; e.hidden = !col; });
       });
-      var lines = SM.zones.map(function (z) { var st = state[z.id]; return z.nom + " : " + (st.m ? st.m + ", " : "") + SM.couleurs[st.c][0]; });
+      var lines = SM.zones.map(function (z) { var st = state[z.id]; return z.nom + " : " + (st.c === 0 ? "d’origine" : (st.m ? st.m + ", " : "") + SM.couleurs[st.c][0]); });
       rec.innerHTML = lines.map(function (l) { return "<li>" + esc(l) + "</li>"; }).join("");
       $("#sim-devis").href = "devis.html?sim=" + encodeURIComponent(JSON.stringify(lines));
     }
     function ui() {
       var z = SM.zones.filter(function (x) { return x.id === cur; })[0], st = state[cur];
       tabs.innerHTML = SM.zones.map(function (x) { return '<button type="button" class="chip' + (x.id === cur ? " on" : "") + '" data-z="' + x.id + '">' + esc(x.nom) + "</button>"; }).join("");
-      sw.innerHTML = SM.couleurs.map(function (c, i) { return '<button type="button" class="sw' + (i === st.c ? " on" : "") + '" data-c="' + i + '" style="--c:' + c[1] + '" aria-label="' + esc(c[0]) + '" title="' + esc(c[0]) + '"></button>'; }).join("");
+      sw.innerHTML = SM.couleurs.map(function (c, i) { return '<button type="button" class="sw' + (i === st.c ? " on" : "") + '" data-c="' + i + '" style="--c:' + (c[1] || "transparent") + '"' + (c[1] ? "" : ' data-o="1"') + ' aria-label="' + esc(c[0]) + '" title="' + esc(c[0]) + '"></button>'; }).join("");
       $("#sim-cname").textContent = SM.couleurs[st.c][0];
-      matBox.style.display = z.matieres.length ? "" : "none";
+      matBox.style.display = z.matieres.length && st.c !== 0 ? "" : "none";
       mats.innerHTML = z.matieres.map(function (m) { return '<button type="button" class="chip' + (m === st.m ? " on" : "") + '" data-m="' + m + '">' + esc(m) + "</button>"; }).join("");
-      $$("#sim .zone").forEach(function (g) { g.classList.toggle("sel", g.id === "z-" + cur); });
-      $(".sim-view", sv).dataset.view = (cur === "sieges" || cur === "ciel") ? "photo" : "svg";
+      ph.dataset.sc = z.scene;
     }
     tabs.addEventListener("click", function (e) { var b = e.target.closest("[data-z]"); if (b) { cur = b.dataset.z; ui(); } });
     sw.addEventListener("click", function (e) { var b = e.target.closest("[data-c]"); if (b) { state[cur].c = +b.dataset.c; ui(); paint(); } });
     mats.addEventListener("click", function (e) { var b = e.target.closest("[data-m]"); if (b) { state[cur].m = b.dataset.m; ui(); paint(); } });
-    sv.addEventListener("click", function (e) { var g = e.target.closest(".zone"); if (g) { cur = g.id.slice(2); ui(); } });
     $("#sim-all").addEventListener("click", function () { var c = state[cur].c; SM.zones.forEach(function (z) { state[z.id].c = c; }); ui(); paint(); });
     $("#sim-reset").addEventListener("click", function () { SM.zones.forEach(function (z) { state[z.id] = { c: 0, m: z.matieres[0] || "" }; }); ui(); paint(); });
     ui(); paint();
