@@ -42,7 +42,7 @@ function x(e) {
 }
 //#endregion
 //#region src/ui/App.tsx
-var S = t(), C = (0, _.lazy)(() => import("./chunks/Scene-CK29PFWI.js").then((e) => e.t)), w = class extends _.Component {
+var S = t(), C = (0, _.lazy)(() => import("./chunks/Scene-BQ9MqA3J.js").then((e) => e.t)), w = class extends _.Component {
 	state = { err: !1 };
 	static getDerivedStateFromError() {
 		return { err: !0 };

@@ -2,11 +2,14 @@ import * as THREE from 'three'
 import type { MaterialId, PatternId, ZoneId } from '../data/zones'
 import { COLOR_BY_ID } from '../data/colors'
 import { getTextures } from './proc'
+import { applyScan, hasScan, type ScanName } from './scan'
 import type { Config } from '../store/useConfigurator'
 
 const cache = new Map<string, THREE.MeshPhysicalMaterial>()
 
 export function buildMaterial(m: MaterialId, colorHex: string, pattern: PatternId, texSize: number): THREE.MeshPhysicalMaterial {
+  // Les motifs de sellerie sont de la vraie géométrie (voir seatGeo.ts) : pour les matières scannées, la texture ne dépend pas du motif.
+  if (hasScan(m)) pattern = 'plain'
   const key = `${m}|${pattern}|${colorHex}|${texSize}`
   const hit = cache.get(key)
   if (hit) return hit
@@ -55,6 +58,7 @@ export function buildMaterial(m: MaterialId, colorHex: string, pattern: PatternI
       Object.assign(mat, { roughness: 0.62, sheen: 0.6, sheenRoughness: 0.5, sheenColor: sheenCol })
       break
   }
+  if (hasScan(m)) void applyScan(mat, m as ScanName, Math.min(texSize, 1024))
   cache.set(key, mat)
   return mat
 }
@@ -84,6 +88,7 @@ export function fixedMat(name: 'plastic' | 'plasticSoft' | 'chrome' | 'carpet' |
       const t = getTextures('leather_grained', 'plain', Math.min(texSize, 512))
       const mm = new THREE.MeshPhysicalMaterial({ color: '#17191b', roughness: 1, clearcoat: 0.05, clearcoatRoughness: 0.7 })
       if (t) { const n = t.normal.clone(); n.repeat.set(5, 5); n.needsUpdate = true; mm.normalMap = n; mm.normalScale = new THREE.Vector2(0.5, 0.5); mm.roughnessMap = null; mm.roughness = 0.62 }
+      void applyScan(mm, 'plastic', Math.min(texSize, 1024))
       m = mm; break
     }
     case 'plasticSoft': m = new THREE.MeshPhysicalMaterial({ color: '#0f1011', roughness: 0.75, sheen: 0.3, sheenRoughness: 0.6, sheenColor: new THREE.Color('#444') }); break

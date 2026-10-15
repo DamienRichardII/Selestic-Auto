@@ -1,0 +1,38 @@
+{
+ "leather_smooth": {
+  "tile": 0.4,
+  "source": "Leather038"
+ },
+ "leather_grained": {
+  "tile": 0.4,
+  "source": "Leather030"
+ },
+ "leather_perforated": {
+  "tile": 0.336,
+  "source": "Leather037"
+ },
+ "suedine": {
+  "tile": 0.3,
+  "source": "Leather039"
+ },
+ "alcantara": {
+  "tile": 0.25,
+  "source": "Leather039"
+ },
+ "fabric": {
+  "tile": 0.3,
+  "source": "Fabric030"
+ },
+ "carbon": {
+  "tile": 0.12,
+  "source": "Fabric004"
+ },
+ "brushed_alu": {
+  "tile": 0.4,
+  "source": "Metal009"
+ },
+ "plastic": {
+  "tile": 0.3,
+  "source": "Rubber004"
+ }
+}
