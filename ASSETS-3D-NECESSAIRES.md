@@ -1,12 +1,12 @@
 # Assets 3D nécessaires (cahier des charges d'acquisition)
 
-## 1. Modèle véhicule (priorité absolue)
-Berline ou SUV premium, **un seul fichier GLB** (ou .blend/.fbx convertible), contenant carrosserie **et** habitacle.
+## 1. Modèle véhicule — HABITACLE en priorité
+Berline ou SUV premium, **un seul fichier GLB** (ou .blend/.fbx convertible). **V1 : habitacle détaillé obligatoire ; carrosserie extérieure facultative** (à intégrer plus tard).
 
 **Licence exigée** : usage commercial web, redistribution du fichier dans un site public autorisée, modification autorisée, pas de marque protégée reproduite (ou autorisation écrite). Conserver la facture/licence dans le dépôt interne (hors repo public).
 
-**Extérieur** : carrosserie (peinture à clearcoat, matériau séparé), portes, capot, coffre, vitres (matériau verre séparé), jantes, pneus, phares/feux, rétroviseurs, plaque neutre.
-**Intérieur** : sièges avant ET arrière, appuie-têtes, planche de bord, volant (moyeu + branches), console centrale, panneaux de 4 portes avec accoudoirs/inserts, ciel de toit + montants, moquette, 4 ceintures + boucles, pédalier, levier.
+**Extérieur *(phase ultérieure, non bloquant pour la v1)*** : carrosserie (peinture à clearcoat, matériau séparé), portes, capot, coffre, vitres (matériau verre séparé), jantes, pneus, phares/feux, rétroviseurs, plaque neutre.
+**Intérieur (v1, obligatoire)** : sièges avant ET arrière, appuie-têtes, planche de bord, volant (moyeu + branches), console centrale, panneaux de 4 portes avec accoudoirs/inserts, ciel de toit + montants, moquette, 4 ceintures + boucles, pédalier, levier.
 
 **Découpe obligatoire (meshes indépendants, noms stables)** — contrat existant (`sim3d-src/README.md` §5) étendu :
 `zone__seat_cushion_{fl,fr,rl,rr}`, `zone__seat_back_*`, `zone__seat_bolster_*`, `zone__seat_headrest_*`, `zone__wheel`, `zone__belts`, `zone__headliner`, `zone__door_panels_*`, `zone__door_armrest_*`, `zone__decor`, `zone__stitching`, `zone__piping`, et `fixed__*` pour le reste ; extérieur : `body__paint`, `body__glass`, `body__wheel`, `body__tyre`, `body__light`, `body__mirror`, `body__trim`.

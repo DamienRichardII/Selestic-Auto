@@ -1,5 +1,7 @@
 # AUDIT — Passage au configurateur « véhicule complet » (phase 1)
 
+> **Priorité validée : l'HABITACLE d'abord.** Carrosserie, jantes, vues extérieures et rotation 360° sont reportées à une phase ultérieure. Les sections ci-dessous s'appliquent d'abord à l'habitacle ; ce qui concerne l'extérieur est marqué *(plus tard)*.
+
 *Branche : `feature/configurateur-premium` (issue de `main`). Aucun déploiement sans validation.*
 
 ## 1. Existant à conserver (déjà en `main`)
@@ -29,6 +31,8 @@
 6. **Appellations.** « Alcantara » (marque déposée) à valider ou renommer ; matières « carbone », « alu » à valider avec l'atelier.
 
 ## 4. Options pour obtenir le modèle (à arbitrer par Selestic)
+*Cible révisée : un modèle dont l'**habitacle** est détaillé (planche de bord, 4 sièges, portes, console, ciel de toit, montants, ceintures, volant). La carrosserie peut être simplifiée ou absente : seuls les montants, vitres et pare-brise visibles depuis l'intérieur comptent pour la v1. Cela élargit le choix (modèles « interior only » moins chers) et réduit la préparation Blender.*
+
 | Option | Qualité | Coût / délai | Risque |
 |---|---|---|---|
 | A. Acheter un modèle premium **berline/SUV avec habitacle détaillé** (licence commerciale royalty-free) et le préparer sous Blender | élevée | ≈ 100–500 € + 2–5 j de préparation | licence à lire ; découpe des zones |
@@ -39,7 +43,7 @@
 **Recommandation : A pour un premier véhicule**, validation de 4 vues + sièges avant, puis généralisation (comme vous le proposez). D peut servir d'ici là pour développer carrosserie, caméras intérieur/extérieur et interface 70/30 sans attendre l'asset.
 
 ## 5. Ce qui peut être fait *sans* le modèle final
-Interface 70/30 + barre inférieure, système de caméras (13 vues, flèches, extérieur/intérieur, plein écran, limites anti-traversée), transitions, chargeur GLB multi-meshes avec carrosserie, matériaux carrosserie (clearcoat), verre, profils de qualité, gestion de perte de contexte WebGL. Tout est branché sur le contrat de nommage et se ré-attachera au vrai GLB sans réécriture.
+Interface 70/30 + barre inférieure, caméras **intérieures** (conducteur, passager, habitacle, sièges avant/arrière, assises, dossiers, volant, portes, ciel de toit ; flèches, plein écran, limites anti-traversée) ; vues extérieures *(plus tard)*, transitions, chargeur GLB multi-meshes avec carrosserie, matériaux carrosserie (clearcoat), verre, profils de qualité, gestion de perte de contexte WebGL. Tout est branché sur le contrat de nommage et se ré-attachera au vrai GLB sans réécriture.
 
 ## 6. Décisions demandées
 1. Option modèle (A / B / C / D) et budget.
